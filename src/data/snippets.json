@@ -1,0 +1,191 @@
+[
+  {
+    "id": "psexjuy",
+    "name": "Slow_Fast.java",
+    "description": "slow fast in linkedList",
+    "level": "Medium",
+    "code": "boolean hasCycle(Node head) {\n    Node slow = head;\n    Node fast = head;\n    while (fast != null && fast.next != null) {\n        slow = slow.next;\n        fast = fast.next.next;\n        if (slow == fast) {\n            return true;\n        }\n    }\n    return false;\n}",
+    "createdAt": "2026-06-23T18:29:36.028Z",
+    "category": "Slow_Fast"
+  },
+  {
+    "id": "9hcw80k",
+    "name": "LCA.java",
+    "description": "lca",
+    "level": "Hard",
+    "code": "\n\nclass Node {\n    int data;\n    Node left;\n    Node right;\n\n    Node(int data) {\n        this.data = data;\n    }\n}\n\npublic class Main {\n\n  // By solving this can be easily understood\n\n    static Node lca(Node root, Node p, Node q) {\n\n        if(root == null)\n            return null;\n\n        if(root == p || root == q)\n            return root; \n\n        // left side\n        Node left = lca(root.left, p, q);\n\n        // right side\n        Node right = lca(root.right, p, q);\n        \n        // if both are not null then that that will be lca \n        if(left != null && right != null)\n            return root;\n\n        // if one of the not null then it will return that\n        return (left != null) ? left : right;\n    }\n\n    public static void main(String[] args) {\n\n        Node root = new Node(3);\n\n        root.left = new Node(5);\n        root.right = new Node(1);\n\n        root.left.left = new Node(6);\n        root.left.right = new Node(2);\n\n        root.right.left = new Node(0);\n        root.right.right = new Node(8);\n\n        root.left.right.left = new Node(7);\n        root.left.right.right = new Node(4);\n\n        Node ans = lca(root,\n                       root.left.right.left,   // 7\n                       root.left.right.right); // 4\n\n        System.out.println(ans.data);\n    }\n}",
+    "createdAt": "2026-06-19T11:05:37.807Z",
+    "category": "trees"
+  },
+  {
+    "id": "tn51tlj",
+    "name": "invert tree.java",
+    "description": "invert tree at each point",
+    "level": "Hard",
+    "code": "class Node {\n    int data;\n    Node left;\n    Node right;\n\n    Node(int data) {\n        this.data = data;\n    }\n}\n\npublic class Main {\n\n    static Node invertTree(Node root) {\n\n        if (root == null)\n            return null;\n\n        Node left = invertTree(root.left);\n        Node right = invertTree(root.right);\n\n        root.left = right;\n        root.right = left;\n\n        return root;\n    }\n\n    static void inorder(Node root) {\n\n        if (root == null)\n            return;\n\n        inorder(root.left);\n        System.out.print(root.data + \" \");\n        inorder(root.right);\n    }\n\n    public static void main(String[] args) {\n\n        Node root = new Node(1);\n\n        root.left = new Node(2);\n        root.right = new Node(3);\n\n        root.left.left = new Node(4);\n        root.left.right = new Node(5);\n\n        root.right.left = new Node(6);\n        root.right.right = new Node(7);\n\n        System.out.print(\"Before: \");\n        inorder(root);\n\n        invertTree(root);\n\n        System.out.print(\"\\nAfter: \");\n        inorder(root);\n    }\n}",
+    "createdAt": "2026-06-18T11:51:08.659Z",
+    "category": "trees"
+  },
+  {
+    "id": "9vnucae",
+    "name": "Symmetric.java",
+    "description": "mirror",
+    "level": "Hard",
+    "code": "class Node {\n    int data;\n    Node left;\n    Node right;\n\n    Node(int data) {\n        this.data = data;\n        this.left = null;\n        this.right = null;\n    }\n}\n\npublic class Main {\n\n    static boolean mirror(Node left, Node right) {\n\n        if (left == null && right == null)\n            return true;\n\n        if (left == null || right == null)\n            return false;\n\n        if (left.data != right.data)\n            return false;\n\n        return mirror(left.left, right.right)\n                && mirror(left.right, right.left);\n    }\n\n    static boolean isSymmetric(Node root) {\n\n        if (root == null)\n            return true;\n\n        return mirror(root.left, root.right);\n    }\n\n    public static void main(String[] args) {\n\n        /*\n                  1\n                /   \\\n               2     2\n              / \\   / \\\n             3   4 4   3\n        */\n\n        Node root = new Node(1);\n\n        root.left = new Node(2);\n        root.right = new Node(2);\n\n        root.left.left = new Node(3);\n        root.left.right = new Node(4);\n\n        root.right.left = new Node(4);\n        root.right.right = new Node(3);\n\n        System.out.println(isSymmetric(root)); // true\n    }\n}",
+    "createdAt": "2026-06-18T11:34:27.296Z",
+    "category": "trees"
+  },
+  {
+    "id": "tsnk2pe",
+    "name": "Binary search tree .java",
+    "description": "Binary tree",
+    "level": "Hard",
+    "code": "class Node {\n    int data;\n    Node left;\n    Node right;\n\n    Node(int data) {\n        this.data = data;\n        this.left = null;\n        this.right = null;\n    }\n}\n\npublic class Main {\n\n    static void preorder(Node root) {\n        if (root == null) {\n            return;\n        }\n\n        System.out.print(root.data + \" \");\n        preorder(root.left);\n        preorder(root.right);\n    }\n\n    static void inorder(Node root) {\n        if (root == null) {\n            return;\n        }\n\n        inorder(root.left);\n        System.out.print(root.data + \" \");\n        inorder(root.right);\n    }\n\n    static void postorder(Node root) {\n        if (root == null) {\n            return;\n        }\n\n        postorder(root.left);\n        postorder(root.right);\n        System.out.print(root.data + \" \");\n    }\n\n    public static void main(String[] args) {\n\n        // Creating the tree\n        Node root = new Node(1);\n\n        root.left = new Node(2);\n        root.right = new Node(3);\n\n        root.left.left = new Node(4);\n        root.left.right = new Node(5);\n\n        root.right.left = new Node(6);\n        root.right.right = new Node(7);\n\n        /*\n                  1\n                /   \\\n               2     3\n              / \\   / \\\n             4   5 6   7\n        */\n\n        System.out.print(\"Preorder: \");\n        preorder(root);\n\n        System.out.println();\n\n        System.out.print(\"Inorder: \");\n        inorder(root);\n\n        System.out.println();\n\n        System.out.print(\"Postorder: \");\n        postorder(root);\n    }\n}",
+    "createdAt": "2026-06-17T19:17:38.546Z",
+    "category": "trees"
+  },
+  {
+    "id": "3x2n6hs",
+    "name": "LevelOrder_level_by_level.java",
+    "description": "level by level ",
+    "level": "Hard",
+    "code": "import java.util.*;\n\nclass Node {\n    int data;\n    Node left, right;\n\n    Node(int data) {\n        this.data = data;\n    }\n}\n\npublic class Main {\n\n    static List<List<Integer>> levelOrder(Node root) {\n\n        List<List<Integer>> result = new ArrayList<>();\n\n        if (root == null)\n            return result;\n\n        Queue<Node> q = new LinkedList<>();\n        q.offer(root);\n\n        while (!q.isEmpty()) {\n\n            int size = q.size(); // nodes in current level\n\n            List<Integer> level = new ArrayList<>();\n\n            for (int i = 0; i < size; i++) {\n\n                Node curr = q.poll();\n\n                level.add(curr.data);\n\n                if (curr.left != null)\n                    q.offer(curr.left);\n\n                if (curr.right != null)\n                    q.offer(curr.right);\n            }\n\n            result.add(level);\n        }\n\n        return result;\n    }\n\n    public static void main(String[] args) {\n\n        Node root = new Node(1);\n        root.left = new Node(2);\n        root.right = new Node(3);\n        root.left.left = new Node(4);\n        root.left.right = new Node(5);\n        root.right.left = new Node(6);\n        root.right.right = new Node(7);\n\n        System.out.println(levelOrder(root));\n    }\n}",
+    "createdAt": "2026-06-16T19:38:11.390Z",
+    "category": "trees"
+  },
+  {
+    "id": "74uj47z",
+    "name": "LevelOrder.java",
+    "description": "BFS",
+    "level": "Hard",
+    "code": "import java.util.*;\n\nclass Node {\n    int data;\n    Node left;\n    Node right;\n\n    Node(int data) {\n        this.data = data;\n        this.left = null;\n        this.right = null;\n    }\n}\n\npublic class Main {\n\n    static void levelOrder(Node root) {\n        if (root == null) return;\n\n        Queue<Node> q = new LinkedList<>();\n        q.offer(root);\n\n        while (!q.isEmpty()) {\n            Node curr = q.poll(); // it removes and return the node\n\n            System.out.print(curr.data + \" \");\n\n            if (curr.left != null)\n                q.offer(curr.left);\n\n            if (curr.right != null)\n                q.offer(curr.right);\n        }\n    }\n\n    public static void main(String[] args) {\n\n        // Creating the tree\n        Node root = new Node(1);\n\n        root.left = new Node(2);\n        root.right = new Node(3);\n\n        root.left.left = new Node(4);\n        root.left.right = new Node(5);\n\n        root.right.left = new Node(6);\n        root.right.right = new Node(7);\n\n        levelOrder(root);\n    }\n}",
+    "createdAt": "2026-06-16T19:20:50.204Z",
+    "category": "trees"
+  },
+  {
+    "id": "uamthev",
+    "name": "nQueens.java",
+    "description": "nQueens",
+    "level": "Hard",
+    "code": "class MyClass {\n    public static boolean isSafe(char[][] board, int row, int col) {\n        // Horizontal\n        for (int j = 0; j < board.length; j++) {\n            if (board[row][j] == 'Q') {\n                return false;\n            }\n        }\n        // Vertical\n        for (int i = 0; i < board.length; i++) {\n            if (board[i][col] == 'Q') {\n                return false;\n            }\n        }\n        // Left Upper Diagonal\n        int r = row;\n        for (int j = col; j >= 0 && r >= 0; j--, r--) {\n            if (board[r][j] == 'Q') {\n                return false;\n            }\n        }\n        // Left Lower Diagonal\n        r = row;\n        for (int j = col; j >= 0 && r < board.length; j--, r++) {\n            if (board[r][j] == 'Q') {\n                return false;\n            }\n        }\n        // Right Upper Diagonal\n        r = row;\n        for (int j = col; j < board.length && r >= 0; j++, r--) {\n            if (board[r][j] == 'Q') {\n                return false;\n            }\n        }\n        // Right Lower Diagonal\n        r = row;\n        for (int j = col; j < board.length && r < board.length; j++, r++) {\n            if (board[r][j] == 'Q') {\n                return false;\n            }\n        }\n        return true;\n    }\n\n    public static void nQueens(char[][] board, int row) {\n\n        if (row == board.length) {\n\n            for (char[] r : board) {\n                System.out.println(new String(r));\n            }\n\n            System.out.println();\n            return;\n        }\n        for (int col = 0; col < board.length; col++) {\n            if (isSafe(board, row, col)) {\n                board[row][col] = 'Q'; // Choose\n                nQueens(board, row + 1); // Explore\n                board[row][col] = '.'; // Backtrack\n            }\n        }\n    }\n\n    public static void main(String[] args) {\n        int n = 4;\n        char[][] board = new char[n][n];\n        for (int i = 0; i < n; i++) {\n            for (int j = 0; j < n; j++) {\n                board[i][j] = '.';\n            }\n        }\n        nQueens(board, 0);\n    }\n}",
+    "createdAt": "2026-06-15T12:31:58.610Z",
+    "category": "Backtracking"
+  },
+  {
+    "id": "f9cu3v5",
+    "name": "Subsets.java",
+    "description": "Number of subsets     = 2^n ,  Number of subsequences = 2^n",
+    "level": "Hard",
+    "code": "import java.util.ArrayList;\npublic class MyClass {\n    static void subsets(int[] arr, int idx, ArrayList<Integer> temp) {\n        // Base Case\n        if (idx == arr.length) {\n            System.out.println(temp);\n            return;\n        }\n        // Not Take\n        subsets(arr, idx + 1, temp);\n\n        // Take\n        temp.add(arr[idx]); // adding \n        subsets(arr, idx + 1, temp); // after adding exploring next\n\n        // Backtrack\n        temp.remove(temp.size() - 1); // after explore Backtrack\n    }\n\n    public static void main(String[] args) {\n        int[] arr = {1, 2, 3};\n        subsets(arr, 0, new ArrayList<>());\n    }\n}",
+    "createdAt": "2026-06-15T12:06:56.738Z",
+    "category": "Backtracking"
+  },
+  {
+    "id": "ddjpf96",
+    "name": "Subsequence.java",
+    "description": "Number of subsets     = 2^n ,  Number of subsequences = 2^n",
+    "level": "Hard",
+    "code": "class MyClass {\n\n    static void subsequence(String str, int idx, String ans) {\n        if (idx == str.length()) {\n            System.out.println(ans);\n            return;\n        }\n        // Take current character // subsequence we first take and also pass the ans as parameter\n        subsequence(str, idx + 1, ans + str.charAt(idx));\n\n        // Don't take current character\n        subsequence(str, idx + 1, ans);\n    }\n\n    public static void main(String[] args) {\n        String str = \"abc\";\n        subsequence(str, 0, \"\");\n    }\n}",
+    "createdAt": "2026-06-15T12:05:28.346Z",
+    "category": "Backtracking"
+  },
+  {
+    "id": "6bgwd8e",
+    "name": "Permutations.java",
+    "description": "Permutations n!",
+    "level": "Hard",
+    "code": "class MyClass {\n    static void permutation(String str,  String perm) {\n    \t\tif(str.length() == 0) { // we updating the str  ( newStr ?) // reduceses the size\n    \t\t\tSystem.out.println(perm);\n    \t\t\treturn;\n    \t\t}\n    \t\tfor (int i = 0; i < str.length(); i++) { // loops runs < str.length()\n    \t\t\tchar currentChar = str.charAt(i);\n    \t\t\tString newStr = str.substring(0,i) + str.substring(i+1); // extracting the remaining string to pass next time\n    \t\t\tpermutation(newStr , perm+currentChar); \n\t\t\t\t\n             }\t\n       }\n    public static void main(String[] args) {\n        String str = \"abc\";\n        permutation(str, \"\");\n    }\n}",
+    "createdAt": "2026-06-15T12:01:35.771Z",
+    "category": "Backtracking"
+  },
+  {
+    "id": "1sxj7t9",
+    "name": "Remove Duplicates from Sorted Array.java",
+    "description": "Remove Duplicates from Sorted Array",
+    "level": "Easy",
+    "code": "class Main {\n    public static void main(String[] args) {\n       int[] arr = {1,1,2,2,3,4,4,5,6,7,7};\n       int j = 0;\n       \n       for (int i = 1; i < arr.length; i++) {\n                if(arr[j] != arr[i]) {\n                        j++;\n                        arr[j] = arr[i];\n                }\n        }\n       for (int k = 0; k <= j; k++) {\n                System.out.print(arr[k]+\" \");\n        }\n   }\n}",
+    "createdAt": "2026-06-14T08:49:21.743Z",
+    "category": "Array"
+  },
+  {
+    "id": "3c8of3c",
+    "name": "Check if Array is Sortedt.java",
+    "description": "Check if Array is Sorted",
+    "level": "Easy",
+    "code": "class Main {\n    public static void main(String[] args) {\n       int arr[] = {1, 2, 3, 4, 5};\n       boolean Sorted = true ;\n       for (int i = 0; i < arr.length-1; i++) {\n                if(arr[i] > arr[i+1]) {\n                        Sorted = false;\n                        break;\n                }\n        }\n       if(Sorted) {\n               System.out.println(\"Sorted\");\n       }else {\n               System.out.println(\"Not sorted\");\n       }\n      }\n}",
+    "createdAt": "2026-06-14T08:48:02.075Z",
+    "category": "Array"
+  },
+  {
+    "id": "2fhmw9z",
+    "name": "Move All Zeros to End of Array.java",
+    "description": "Move All Zeros to End of Array",
+    "level": "Easy",
+    "code": "class Main {\n    public static void main(String[] args) {\n       int arr[] = {1,0,2,0,3,4};\n       \n    int j = 0;\n    for (int i = 0; i < arr.length; i++) {\n                if(arr[i] != 0) {\n                        arr[j] = arr[i];\n                        j++;\n                }\n        }\n    while (j < arr.length) {\n            arr[j] = 0;\n            j++;\n    }\n    for(int num : arr) {\n            System.out.print(num + \" \");\n    }\n            }\n}",
+    "createdAt": "2026-06-14T08:47:06.451Z",
+    "category": "Array"
+  },
+  {
+    "id": "oave1k9",
+    "name": "Reverse a array.java",
+    "description": "Reverse a array",
+    "level": "Easy",
+    "code": "package logic;\n\npublic class Main {\n\n    public static void main(String[] args) {\n\n        int[] arr = {1, 2, 3, 4, 5};\n\n        int start = 0;\n        int end = arr.length - 1;\n\n        while (start < end) {\n\n            int temp = arr[start];\n            arr[start] = arr[end];\n            arr[end] = temp;\n\n            start++;\n            end--;\n        }\n\n        for (int i = 0; i < arr.length; i++) {\n            System.out.print(arr[i] + \" \");\n        }\n    }\n}",
+    "createdAt": "2026-06-14T08:46:31.871Z",
+    "category": "Array"
+  },
+  {
+    "id": "hovvroq",
+    "name": "Secondlargest .java",
+    "description": "Secondlargest ",
+    "level": "Easy",
+    "code": "class Main {\n    public static void main(String[] args) {\n       int arr[] = {4, 2, 9, 7};\n       int largest = Integer.MIN_VALUE;\n       int Secondlargest = Integer.MIN_VALUE;\n       \n       for (int i = 0; i < arr.length; i++) {\n                if (arr[i] > largest) {\n                        Secondlargest = largest;\n                        largest = arr[i];\n                } else if(arr[i] > Secondlargest && arr[i] != largest){\n                        Secondlargest=arr[i];\n                }\n        }\n       System.out.println(Secondlargest);\n            }\n}",
+    "createdAt": "2026-06-14T08:44:07.772Z",
+    "category": "Array"
+  },
+  {
+    "id": "t1mnrmg",
+    "name": "smallestElement.java",
+    "description": "Smallest element",
+    "level": "Easy",
+    "code": "public class Main {\n    public static void main(String[] args) {\n        int[] arr = {4, 2, 9, 7};\n        int smallest = arr[0];\n\n        for (int i = 1; i < arr.length; i++) {\n            if (arr[i] < smallest) {\n                smallest = arr[i];\n            }\n        }\n        System.out.println(smallest);\n    }\n}",
+    "createdAt": "2026-06-14T05:58:07.814Z",
+    "category": "Array"
+  },
+  {
+    "id": "ml3j3vi",
+    "name": "Peak Element.java",
+    "description": "Peak Element",
+    "level": "Medium",
+    "code": "import java.util.*;\n\npublic class Main {\n    static int findPeakElement(int arr[]) {\n     int n = arr.length;\n     if(n == 1) {\n        return 0;\n     }\n\n     if(arr[0] > arr[1]) {\n        return 0;\n     }\n\n     for(int i = 1; i < n - 1; i++) {\n        if(arr[i] > arr[i-1] && arr[i] > arr[i+1]) {\n            return i;\n        }\n     }\n     if(arr[n-1] > arr[n-2]) {\n        return n-1;\n     }\n\n     return -1;\n    }\n    public static void main(String[] args) {\n        Scanner scanner = new Scanner(System.in);\n        int n = scanner.nextInt();\n        int arr[] = new int[n];\n\n        for(int i = 0; i < n; i++) {\n            arr[i] = scanner.nextInt();\n        }\n        System.out.println(findPeakElement(arr));\n    }\n}\n\n\n\n// Example : 2\n\nimport java.util.Scanner;\n\npublic class Main {\n    \n    static int findPeakElement(int[] arr) {\n        int low = 0;\n        int high = arr.length - 1;\n        \n        while (low < high) {\n            int mid = low + (high - low) / 2;\n            \n            // If the element to the right is greater, \n            // then a peak must exist on the right half.\n            if (arr[mid] < arr[mid + 1]) {\n                low = mid + 1;\n            } \n            // Otherwise, a peak lies on the left half (including mid).\n            else {\n                high = mid;\n            }\n        }\n        \n        // 'low' and 'high' will converge to the peak element's index\n        return low;\n    }\n\n    public static void main(String[] args) {\n        Scanner scanner = new Scanner(System.in);\n        \n        // Read the size of the array\n        int n = scanner.nextInt();\n        int arr[] = new int[n];\n        \n        // Read the array elements\n        for (int i = 0; i < n; i++) {\n            arr[i] = scanner.nextInt();\n        }\n        \n        // Find and print the peak element's index\n        int peakIndex = findPeakElement(arr);\n        System.out.println(peakIndex);\n        \n        scanner.close();\n    }\n}\n",
+    "createdAt": "2026-06-14T05:48:53.540Z",
+    "category": "Array"
+  },
+  {
+    "id": "java1",
+    "name": "largerElement.java",
+    "description": "Greater in array",
+    "level": "Easy",
+    "code": "public class Main {\n    public static void main(String[] args) {\n        int[] arr = {4, 2, 9, 7};\n\n        int largest = arr[0];\n        for (int i = 1; i < arr.length; i++) {\n            if (arr[i] > largest) {\n                largest= arr[i];\n            }\n        }\n        System.out.println(largest);\n    }\n}",
+    "createdAt": "2024-06-14T00:00:00.000Z",
+    "category": "Array"
+  },
+  {
+    "id": "nimwzgc",
+    "name": "MyClass.java",
+    "description": "Peak Element",
+    "level": "Medium",
+    "code": "static int binarySearch(int arr[], int target) {\n    int left = 0;\n    int right = arr.length - 1;\n\n    while (left <= right) {\n        int mid = left + (right - left) / 2;\n\n        if (target == arr[mid]) {\n            return mid;\n        } else if (target > arr[mid]) {\n            left = mid + 1;\n        } else {\n            right = mid - 1;\n        }\n    }\n    return -1;\n}",
+    "createdAt": "2026-06-13T22:30:00.318Z",
+    "category": "Array"
+  },
+  {
+    "id": "rearyp9",
+    "name": "MyClass.java",
+    "code": "package logic;\n\nclass MyClass {\n\n    public static int partition(int arr[], int low, int high) {\n\n        int pivot = arr[high];\n        int i = low - 1;\n\n        for(int j = low; j < high; j++) {\n\n            if(arr[j] < pivot) {\n\n                i++;\n\n                int temp = arr[i];\n                arr[i] = arr[j];\n                arr[j] = temp;\n            }\n        }\n\n        int temp = arr[i + 1];\n        arr[i + 1] = arr[high];\n        arr[high] = temp;\n\n        return i + 1;\n    }\n\n    public static void quickSort(int arr[], int low, int high) {\n\n        if(low < high) {\n\n            int pivotIndex = partition(arr, low, high);\n\n            quickSort(arr, low, pivotIndex - 1);\n            quickSort(arr, pivotIndex + 1, high);\n        }\n    }\n\n    public static void main(String[] args) {\n\n        int arr[] = {1, 2, 3, 2, 32, 23, 31, 15};\n\n        quickSort(arr, 0, arr.length - 1);\n\n        for(int x : arr) {\n            System.out.print(x + \" \");\n        }\n    }\n}",
+    "createdAt": "2026-06-13T22:07:34.673Z",
+    "description": "QuickSort",
+    "level": "Easy",
+    "category": "Sorting"
+  }
+]
