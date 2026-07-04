@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 
@@ -108,6 +108,15 @@ const IconJava = () => (
   </svg>
 );
 
+const IconMenu = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" width="20" height="20">
+    <line x1="3" y1="12" x2="21" y2="12"></line>
+    <line x1="3" y1="6" x2="21" y2="6"></line>
+    <line x1="3" y1="18" x2="21" y2="18"></line>
+  </svg>
+);
+
+
 export default function Home() {
   const [currentPath, setCurrentPath] = useState("");
   const [parentPath, setParentPath] = useState(null);
@@ -122,6 +131,7 @@ export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
   const [pathInput, setPathInput] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   
   // Modals state
   const [createModal, setCreateModal] = useState({ isOpen: false, type: "file" }); // type = file or folder
@@ -139,6 +149,19 @@ export default function Home() {
   const [snippetLevel, setSnippetLevel] = useState("Easy"); // Easy, Medium, Hard
   const [snippetCode, setSnippetCode] = useState("");
   const [snippetCategory, setSnippetCategory] = useState(""); // Category/Pattern (e.g. Sliding Window)
+
+  // Computed: Group Java Snippets by Category for Sidebar
+  const snippetCategories = useMemo(() => {
+    const counts = {};
+    javaSnippets.forEach(s => {
+      const cat = s.category || "Uncategorized";
+      counts[cat] = (counts[cat] || 0) + 1;
+    });
+    // Convert to sorted array of objects
+    return Object.entries(counts)
+      .map(([name, count]) => ({ name, count }))
+      .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
+  }, [javaSnippets]);
 
   const [levelFilter, setLevelFilter] = useState("All");
   const [categoryFilter, setCategoryFilter] = useState("All");
@@ -226,6 +249,12 @@ export default function Home() {
     const savedCollapsed = localStorage.getItem("localspace-sidebar-collapsed");
     if (savedCollapsed) {
       setCollapsedSections(JSON.parse(savedCollapsed));
+    }
+
+    // Load Sidebar State
+    const savedSidebarCollapsed = localStorage.getItem("localspace-sidebar-main-collapsed");
+    if (savedSidebarCollapsed) {
+      setIsSidebarCollapsed(JSON.parse(savedSidebarCollapsed));
     }
   }, []);
 
@@ -631,6 +660,12 @@ export default function Home() {
     localStorage.setItem("localspace-sidebar-collapsed", JSON.stringify(newState));
   };
 
+  const toggleSidebar = () => {
+    const newState = !isSidebarCollapsed;
+    setIsSidebarCollapsed(newState);
+    localStorage.setItem("localspace-sidebar-main-collapsed", JSON.stringify(newState));
+  };
+
   // Filter items based on query
   const filteredItems = items.filter((item) =>
     item.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -787,7 +822,7 @@ export default function Home() {
 
   return (
     <div 
-      className={`app-container ${showJavaLab ? "lab-zen-mode" : ""}`}
+      className={`app-container ${showJavaLab ? "lab-zen-mode" : ""} ${isSidebarCollapsed ? "sidebar-collapsed" : ""}`}
       onDragEnter={handleDragEnter}
       onDragLeave={handleDragLeave}
       onDragOver={handleDragOver}
@@ -811,6 +846,9 @@ export default function Home() {
         <header className="header-bar">
           {!showJavaLab && (
             <div className="logo-section">
+              <button className="btn-icon sidebar-toggle-btn" onClick={toggleSidebar} title="Toggle Sidebar">
+                <IconMenu />
+              </button>
               <div className="logo-icon">L</div>
               <div className="logo-text">LocalSpace</div>
             </div>
@@ -837,7 +875,7 @@ export default function Home() {
       {/* Editor Side Split View Wrapper */}
       <div className="workspace-wrapper">
         {/* Sidebar */}
-        <aside className="sidebar-panel">
+        <aside className={`sidebar-panel ${isSidebarCollapsed ? "collapsed" : ""}`}>
           <div>
             <div 
               className="section-title-wrapper" 
@@ -900,26 +938,50 @@ export default function Home() {
               className="section-title-wrapper" 
               onClick={() => toggleSection("workspace")}
             >
-              <div className="section-title">Active Workspace Details</div>
+              <div className="section-title">Snippet Patterns</div>
               <span className={`collapse-icon ${collapsedSections.workspace ? "collapsed" : ""}`}>
                 <IconChevronDown />
               </span>
             </div>
 
             <div className={`collapsible-section ${collapsedSections.workspace ? "collapsed" : ""}`}>
-              <div style={{ fontSize: "0.82rem", color: "var(--text-muted)", lineHeight: "1.6", display: "flex", flexDirection: "column", gap: "8px" }}>
-                <div>
-                  <strong>Active Directory:</strong>
-                  <div style={{ wordBreak: "break-all", marginTop: "4px", color: "var(--text-secondary)", fontFamily: "var(--font-mono)" }}>
-                    {currentPath || "Loading..."}
+              <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+                {snippetCategories.length === 0 ? (
+                  <div style={{ padding: "8px 10px", fontSize: "0.8rem", color: "var(--text-muted)", fontStyle: "italic" }}>
+                    No categorized snippets
                   </div>
-                </div>
-                <div>
-                  <strong>Contents count:</strong>
-                  <div style={{ color: "var(--text-secondary)", marginTop: "4px" }}>
-                    {items.length} item(s) total ({items.filter(i => i.isDir).length} folders, {items.filter(i => !i.isDir).length} files)
-                  </div>
-                </div>
+                ) : (
+                  snippetCategories.map((cat, idx) => (
+                    <div 
+                      key={idx}
+                      className={`tree-node ${categoryFilter === cat.name && showJavaLab ? "active" : ""}`}
+                      onClick={() => {
+                        setShowJavaLab(true);
+                        setCategoryFilter(cat.name);
+                        setEditingFile(null);
+                        setSelectedSnippet(null); // Clear selected snippet to show list
+                      }}
+                    >
+                      <span style={{ opacity: 0.6, display: "flex", alignItems: "center" }}>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="14" height="14">
+                          <path fillRule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10zm0 5.25a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75a.75.75 0 01-.75-.75z" clipRule="evenodd" />
+                        </svg>
+                      </span>
+                      <span style={{ fontSize: "0.85rem", flex: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                        {cat.name}
+                      </span>
+                      <span style={{ 
+                        fontSize: "0.7rem", 
+                        backgroundColor: "rgba(255,255,255,0.06)", 
+                        padding: "1px 6px", 
+                        borderRadius: "10px",
+                        color: "var(--text-muted)"
+                      }}>
+                        {cat.count}
+                      </span>
+                    </div>
+                  ))
+                )}
               </div>
             </div>
           </div>
@@ -994,6 +1056,9 @@ export default function Home() {
                 /* JAVA LAB UI */
                 <div className="java-lab-container">
                   <div className="lab-header">
+                    <button className="btn-icon sidebar-toggle-btn" style={{ marginLeft: '4px' }} onClick={toggleSidebar} title="Toggle Sidebar">
+                      <IconMenu />
+                    </button>
                     <div className="lab-title-group">
                       <div className="lab-icon"><IconJava /></div>
                       <div>

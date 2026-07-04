@@ -163,8 +163,22 @@ select {
   font-weight: 600;
   background: linear-gradient(to right, #fff, var(--text-secondary));
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   letter-spacing: -0.5px;
+}
+
+.sidebar-toggle-btn {
+  margin-right: 4px;
+  background: rgba(255, 255, 255, 0.03);
+  border-color: var(--border-color);
+  color: var(--text-secondary);
+}
+
+.sidebar-toggle-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-primary);
+  border-color: var(--primary);
 }
 
 .path-config-input {
@@ -207,6 +221,11 @@ select {
   grid-template-columns: 280px 1fr;
   overflow: hidden;
   height: 100%;
+  transition: grid-template-columns var(--transition-normal);
+}
+
+.sidebar-collapsed .workspace-wrapper {
+  grid-template-columns: 0px 1fr;
 }
 
 /* Sidebar Styling */
@@ -218,6 +237,16 @@ select {
   flex-direction: column;
   gap: 24px;
   overflow-y: auto;
+  transition: all var(--transition-normal);
+  width: 280px;
+}
+
+.sidebar-panel.collapsed {
+  width: 0;
+  padding: 0;
+  border-right: none;
+  opacity: 0;
+  pointer-events: none;
 }
 
 .section-title {
@@ -1009,17 +1038,19 @@ select {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 6px 10px;
+  padding: 8px 16px;
   background: var(--bg-card);
   border: 1px solid var(--glass-border);
   border-radius: 12px;
   backdrop-filter: var(--glass-blur);
+  gap: 12px;
 }
 
 .lab-title-group {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
+  min-width: 0;
 }
 
 .lab-icon {

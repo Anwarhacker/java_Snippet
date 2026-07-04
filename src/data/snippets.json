@@ -1,10 +1,522 @@
 [
   {
+    "id": "kuaf7io",
+    "name": "Question",
+    "description": "Question",
+    "level": "Medium",
+    "code": "https://app.kodnest.com/my-learning/class/eb011eb8-54e5-423c-b731-00623b3ee9c8/module/712d953c-1c21-42d1-9b67-88462d5ef656/topic/af720895-511b-406a-a8c7-166a94991940/sub-topic/5f5a775e-3e2e-43a2-9be9-4973d088e23f/layout/3/content",
+    "createdAt": "2026-06-30T10:07:44.671Z",
+    "category": "logic"
+  },
+  {
+    "id": "8kk08ln",
+    "name": "Longest Continuous Decreasing Subarray",
+    "description": "Longest Continuous Decreasing Subarray",
+    "level": "Medium",
+    "code": "package problems;\nimport java.util.HashSet;\n\nclass Main {    \n    public static void main(String[] args) {\n\tint arr[] = {9,8,7,6,4,3,6,5};\n\tint left =0;\n\tint count = 1;\n\tint maxInc = 1;\n\n\t\tfor (int right = 1; right < arr.length; right++) {\n\t\t\tif(arr[left] > arr[right]) {\n\t\t\t\tcount++;\n\t\t\t\tmaxInc = Math.max(maxInc, count);\n\t\t\t} else {\n\t\t\t\tcount = 0;\n\t\t\t}\n\t\t\tleft++;\n\t\t}\n\t\tSystem.out.println(maxInc);\n    }\n}",
+    "createdAt": "2026-06-30T06:56:21.953Z",
+    "category": "Sliding window"
+  },
+  {
+    "id": "ai6eiko",
+    "name": "Longest Continuous Increasing Subarray",
+    "description": "Longest Continuous Increasing Subarray",
+    "level": "Medium",
+    "code": "package problems;\nimport java.util.HashSet;\n\nclass Main {    \n    public static void main(String[] args) {\n\tint arr[] = {1,3,5,4,7};\n\tint left =0;\n\tint count = 1;\n\tint maxInc = 1;\n\n\t\tfor (int right = 1; right < arr.length; right++) {\n\t\t\tif(arr[left] < arr[right]) {\n\t\t\t\tcount++;\n\t\t\t\tmaxInc = Math.max(maxInc, count);\n\t\t\t} else {\n\t\t\t\tcount = 0;\n\t\t\t}\n\t\t\tleft++;\n\t\t}\n\t\tSystem.out.println(maxInc);\n    }\n}",
+    "createdAt": "2026-06-30T06:55:13.410Z",
+    "category": "Sliding window"
+  },
+  {
+    "id": "3q7mmes",
+    "name": "Longest Substring Without Repeating Characters",
+    "description": "Longest Substring Without Repeating Characters",
+    "level": "Medium",
+    "code": "package problems;\nimport java.util.HashSet;\n\nclass Main {    \n    public static void main(String[] args) {\n\n     String str = \"abcabcbb\";\n    int left = 0;\n    int maxL = 0;\n    \n    HashSet<Character> set =  new HashSet<>();\n    for (int right = 0; right < str.length(); right++) {\n\t\t\n    \twhile(set.contains(str.charAt(right))) {\n    \t\tset.remove(str.charAt(left));\n    \t\tleft++;\n    \t}\n    \t\n    \tset.add(str.charAt(right));\n    \tmaxL  = Math.max(maxL, right - left +1);\n\t}\n     System.out.println(maxL);\n    }\n}",
+    "createdAt": "2026-06-30T06:33:39.476Z",
+    "category": "Sliding window"
+  },
+  {
+    "id": "ewgwkcn",
+    "name": "Longest Subarray with Sum = K (Positive Numbers)",
+    "description": "Longest Subarray with Sum = K (Positive Numbers)",
+    "level": "Medium",
+    "code": "package problems;\nimport java.util.HashMap;\n\nclass Main {    \n    public static void main(String[] args) {\n\n      int[]  arr = {1,2,1,1,1,3,2};\n      int k = 5;\n      int left = 0;\n      int maxLen = 0;\n      int sum = 0;\n      \n      for (int right = 0; right < arr.length; right++) {\n\t\tsum += arr[right];\n\t\t\n\t\twhile(sum > k) {\n\t\t\tsum -= arr[left];\n\t\t\tleft++;\n\t\t}\n\t\t\n\t\tmaxLen = Math.max(maxLen, right-left+1); \n\t}\n      System.out.println(maxLen);\n\t\n    }\n}",
+    "createdAt": "2026-06-30T06:20:28.688Z",
+    "category": "Sliding window"
+  },
+  {
+    "id": "yo26x6p",
+    "name": "Count Distinct Elements in Every Window",
+    "description": "Count Distinct Elements in Every Window",
+    "level": "Medium",
+    "code": "package problems;\nimport java.util.HashMap;\n\nclass Main {    \n    public static void main(String[] args) {\n\n      int[]  arr = {1,2,1,3,4,2,3};\n      int k = 4;\n      int left = 0;\n      \n\t\tHashMap<Integer , Integer> map = new HashMap<>();\n\t\tfor (int right = 0; right < arr.length; right++) {\n\t\t\t\n\t\t\tmap.put(arr[right], map.getOrDefault(arr[right], 0)+1);\n\t\t\tif(right >= k-1) {\n\t\t\t\tSystem.out.println(map.size());\n\t\t\t\tmap.put(arr[left], map.get(arr[left])-1);\n\t\t\t\t\n\t\t\t\tif(map.get(arr[left]) == 0) {\n\t\t\t\t\tmap.remove(arr[left]);\n\t\t\t\t}\n\t\t\t\t\tleft ++;\n\t\t\t}\n\t\t}   \n    }\n}",
+    "createdAt": "2026-06-30T05:58:51.902Z",
+    "category": "Sliding window"
+  },
+  {
+    "id": "534an4r",
+    "name": "First Negative Number in Every Window of Size K",
+    "description": "First Negative Number in Every Window of Size K",
+    "level": "Medium",
+    "code": "package problems;\nimport java.util.LinkedList;\nimport java.util.Queue;\n\nclass Main {\n\n    public static void main(String[] args) {\n      int[]  arr = {-8,2,3,-6,10};\n      int k = 3;\n      \n      int left = 0;\n      \n      Queue<Integer> q = new LinkedList<>();\n      for (int right = 0; right < arr.length; right++) {\n\t\tif(arr[right] < 0) {\n\t\t\tq.offer(right);\n\t\t}\n\t\t\n\t\tif(right >= k - 1) {\n\t\t\tif(q.isEmpty()) {\n\t\t\t\tSystem.out.println(\"0\");\n\t\t\t} else {\n\t\t\t\tSystem.out.println(arr[q.peek()]);\n\t\t\t}\n\t\t\t\n\t\t\tif(!q.isEmpty() && q.peek() == left) {\n\t\t\t\tq.poll();\n\t\t\t}\n\t\t\tleft++;\n\t\t}\n\t} \n    }\n}",
+    "createdAt": "2026-06-30T05:34:35.923Z",
+    "category": "Sliding window"
+  },
+  {
+    "id": "v2n435p",
+    "name": "Maximum Sum Subarray of Size K (Fixed Window)",
+    "description": "Maximum Sum Subarray of Size K (Fixed Window)",
+    "level": "Medium",
+    "code": "package problems;\nclass Main {\n\n    \n    public static void main(String[] args) {\n\n\n      int[]  arr = {2,1,5,1,3,2};\n      int k = 3;\n      \n      int left = 0;\n      int maxSum = Integer.MIN_VALUE;\n      int sum = 0;\n      \n      \n      for (int right = 0; right < arr.length; right++) {\n    \t  sum +=  arr[right];\n    \t  \n    \t  if(right >= k-1) {\n    \t\t  maxSum = Math.max(maxSum, sum);\n    \t\t  sum -= arr[left];\n    \t\t  left++;\n    \t  }\n\t}\n      \n      System.out.println(maxSum);\n    }\n}",
+    "createdAt": "2026-06-30T05:20:54.944Z",
+    "category": "Sliding window"
+  },
+  {
+    "id": "g0zp0j4",
+    "name": "Minimum Sum Subarray of Size K",
+    "description": "Minimum Sum Subarray of Size K",
+    "level": "Medium",
+    "code": "package problems;\nclass Main {\n\n    \n    public static void main(String[] args) {\n\n\n      int[]  arr = {4, 2, 1, 7, 8, 1, 2};\n      int k = 2;\n      \n      int left = 0;\n      int minSum = Integer.MAX_VALUE;\n      int sum = 0;\n      \n      \n      for (int right = 0; right < arr.length; right++) {\n    \t  sum +=  arr[right];\n    \t  \n    \t  if(right >= k-1) {\n    \t\t  minSum = Math.min(minSum, sum);\n    \t\t  sum -= arr[left];\n    \t\t  left++;\n    \t  }\n\t}\n      \n      System.out.println(minSum);\n    }\n}",
+    "createdAt": "2026-06-30T05:19:00.740Z",
+    "category": "Sliding window"
+  },
+  {
+    "id": "1cxlrp6",
+    "name": "graph basics.java",
+    "description": "graph",
+    "level": "Easy",
+    "code": "graph -- > https://chatgpt.com/c/6a39a28e-95c4-83ee-93d9-d0d83ccbcfbb \n          (1018)",
+    "createdAt": "2026-06-29T14:16:10.991Z",
+    "category": "graph"
+  },
+  {
+    "id": "3dct7js",
+    "name": "Merge Intervals.java",
+    "description": "Merge Intervals (LeetCode 56)",
+    "level": "Medium",
+    "code": "package problems;\n\nimport java.util.*;\n\nclass Solution {\n\n    public int[][] merge(int[][] intervals) {\n\n        // If there is only one interval, no merging is needed.\n        if (intervals.length <= 1) {\n            return intervals;\n        }\n\n        // Step 1: Sort intervals based on the start value.\n        Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]));\n\n        // Step 2: Store merged intervals.\n        List<int[]> ans = new ArrayList<>();\n\n        // Step 3: Add the first interval.\n        ans.add(intervals[0]);\n\n        // Step 4: Traverse remaining intervals.\n        for (int i = 1; i < intervals.length; i++) {\n\n            // Get the last merged interval.\n            int[] last = ans.get(ans.size() - 1);\n\n            // If intervals overlap, merge them.\n            if (intervals[i][0] <= last[1]) {\n                last[1] = Math.max(last[1], intervals[i][1]);\n            }\n\n            // Otherwise, add the current interval.\n            else {\n                ans.add(intervals[i]);\n            }\n        }\n\n        // Step 5: Convert ArrayList<int[]> to int[][].\n        return ans.toArray(new int[ans.size()][]);\n    }\n}\n\nclass Main {\n\tpublic static void main(String[] args) {\n\t\tSolution s = new Solution();\n\t\tint[][] arr = {{1,3},\n\t\t\t    {2,6},\n\t\t\t    {8,10},\n\t\t\t    {15,18}};\n\t\t int[][] intervals = s.merge(arr);\n\t\t \n\t\t for (int i = 0; i < intervals.length; i++) {\n\t\t\tfor (int j = 0; j < intervals[i].length; j++) {\n\t\t\t\tSystem.out.print(intervals[i][j] +\" \");\n\t\t\t}\n\t\t\tSystem.out.println();\n\t\t}\n\t\t\n\t}\n}",
+    "createdAt": "2026-06-29T06:05:18.859Z",
+    "category": "merge intervals"
+  },
+  {
+    "id": "hgclgto",
+    "name": "Question.java",
+    "description": "logical question",
+    "level": "Medium",
+    "code": "https://app.kodnest.com/my-learning/class/eb011eb8-54e5-423c-b731-00623b3ee9c8/module/712d953c-1c21-42d1-9b67-88462d5ef656/topic/63f80611-a0a9-447b-a5db-efadcaf8ef9e/sub-topic/808076a0-4df4-4fb8-b348-7ce164ca7a55/layout/3/content",
+    "createdAt": "2026-06-28T18:44:02.821Z",
+    "category": "logic"
+  },
+  {
+    "id": "n4inrbv",
+    "name": "Find the leaders in a array.java",
+    "description": "Find the leaders in a array",
+    "level": "Medium",
+    "code": "\nimport java.util.*;\nclass Main {        \n        static ArrayList<Integer>  findTheLeader(int arr[] , int n) {\n                ArrayList<Integer> list = new ArrayList<>();\n                \n                int maxFromRight = arr[n-1];\n                list.add(maxFromRight);\n                for (int i = n-2; i >= 0; i--) {\n                        if(maxFromRight < arr[i]) {\n                                maxFromRight = arr[i];\n                                list.add(maxFromRight);\n                        }\n                }\n                Collections.reverse(list);\n                return list;\n        }\n        public static void main(String[] args) {\n                int arr[] = {16,17,4,3,5,2};\n                int n = arr.length;\n                \n                ArrayList<Integer> list = findTheLeader(arr , n);\n                System.out.println(list);\n        }\n}",
+    "createdAt": "2026-06-28T17:57:46.706Z",
+    "category": "Array"
+  },
+  {
+    "id": "pjn8vd7",
+    "name": "Logic.java",
+    "description": "Logic",
+    "level": "Easy",
+    "code": "Don't start by writing Java code. Start by solving the problem like a human.\n Then write the steps in English, convert them to pseudocode, and finally translate them into Java. \nThis habit is one of the fastest ways to improve your problem-solving logic.",
+    "createdAt": "2026-06-28T09:57:18.363Z",
+    "category": "logic"
+  },
+  {
+    "id": "2b0j352",
+    "name": "Best time to buy and sell the stock .java",
+    "description": "Best time to buy and sell the stock ",
+    "level": "Medium",
+    "code": "package problems;\nimport java.util.*;\nclass Main {\n\tstatic int maxProfit(int arr[]) {\n\t\tint minPrice = Integer.MAX_VALUE;\n\t\tint maxProfit = 0;\n\t\t\n\t\tfor(int price : arr) {\n\t\t\tminPrice = Math.min(minPrice, price);\n\t\t\tmaxProfit = Math.max(maxProfit, price - minPrice);\n\t\t}\t\n\t\treturn maxProfit;\n\t\t\n\t}\n\t\t\n\tpublic static void main(String[] args) {\n\t\tint arr[] = {7,1,5,3,6,4};\n\t\tSystem.out.println(maxProfit(arr));\n\t}\n}",
+    "createdAt": "2026-06-28T08:54:33.854Z",
+    "category": "Array"
+  },
+  {
+    "id": "jnoxxz7",
+    "name": "OctalToBinary .java",
+    "description": "OctalToBinary ",
+    "level": "Hard",
+    "code": "import java.util.Scanner;\n\npublic class OctalToBinary {\n    public static int octalToDecimal(int octal) {\n        int decimal = 0, base = 1;\n        while (octal > 0) {\n            int lastDigit = octal % 10;\n            decimal += lastDigit * base;\n            base *= 8;\n            octal /= 10;\n        }\n        return decimal;\n    }\n\n    public static void decimalToBinary(int decimal) {\n        if (decimal == 0) {\n            System.out.print(\"0\");\n            return;\n        }\n        StringBuilder binary = new StringBuilder();\n\n        while (decimal > 0) {\n            binary.append(decimal % 2);\n            decimal /= 2;\n        }\n        System.out.print(binary.reverse().toString());\n    }\n\n    public static void main(String[] args) {\n        Scanner scanner = new Scanner(System.in);\n        int octal = scanner.nextInt();\n\n        int decimal = octalToDecimal(octal);\n        System.out.print(\"Binary representation: \");\n        decimalToBinary(decimal);\n        System.out.println();\n        scanner.close();\n    }\n}",
+    "createdAt": "2026-06-26T11:01:30.112Z",
+    "category": "Conversion"
+  },
+  {
+    "id": "bqa0zsj",
+    "name": "achiveByFlow.java",
+    "description": "Flow",
+    "level": "Easy",
+    "code": "Interview tip\n\nYour approach is exactly what interviewers usually expect:\n\nBinary ↔ Decimal\nOctal ↔ Decimal\nHexadecimal ↔ Decimal\n\nFor conversions between two non-decimal bases, it's often easiest to go through decimal:\n\nOctal → Decimal → Binary\nBinary → Decimal → Octal\nHex → Decimal → Binary",
+    "createdAt": "2026-06-26T10:59:20.052Z",
+    "category": "Conversion"
+  },
+  {
+    "id": "myck6gr",
+    "name": "DecimalToHexadecimal .java",
+    "description": "DecimalToHexadecimal ",
+    "level": "Medium",
+    "code": "import java.util.Scanner;\n\npublic class DecimalToHexadecimal {\n\n    static void convertToHexadecimal(int num) {\n\n        if (num == 0) {\n            System.out.println(\"0\");\n            return;\n        }\n\n        StringBuilder ans = new StringBuilder();\n\n        while (num > 0) {\n\n            int rem = num % 16;\n\n            if (rem < 10) {\n                ans.append(rem);\n            } else {\n                ans.append((char) ('A' + rem - 10));\n            }\n\n            num /= 16;\n        }\n\n        System.out.println(ans.reverse());\n    }\n\n    public static void main(String[] args) {\n\n        Scanner sc = new Scanner(System.in);\n\n        int n = sc.nextInt();\n\n        convertToHexadecimal(n);\n\n        sc.close();\n    }\n}",
+    "createdAt": "2026-06-26T10:57:42.261Z",
+    "category": "Conversion"
+  },
+  {
+    "id": "mp7fxsn",
+    "name": "OctalToDecimal .java",
+    "description": "OctalToDecimal ",
+    "level": "Medium",
+    "code": "import java.util.Scanner;\n\npublic class OctalToDecimal {\n\n    static void convertToDecimal(int num) {\n\n        int decimal = 0;\n        int power = 1;\n\n        while (num > 0) {\n\n            int digit = num % 10;\n            decimal += digit * power;\n\n            power *= 8;\n            num /= 10;\n        }\n\n        System.out.println(decimal);\n    }\n\n    public static void main(String[] args) {\n\n        Scanner sc = new Scanner(System.in);\n\n        int n = sc.nextInt();\n\n        convertToDecimal(n);\n\n        sc.close();\n    }\n}",
+    "createdAt": "2026-06-26T10:55:53.717Z",
+    "category": "Conversion"
+  },
+  {
+    "id": "3qjdn5r",
+    "name": "Decimal to Octal.java",
+    "description": "https://claude.ai/chat/f779a9fe-eb76-42f8-bc9e-0e9bc7a0bcea",
+    "level": "Medium",
+    "code": "import java.util.Scanner;\n\npublic class DecimalToOctal {\n\n    static void convertToOctal(int num) {\n\n        if (num == 0) {\n            System.out.println(0);\n            return;\n        }\n\n        StringBuilder ans = new StringBuilder();\n\n        while (num > 0) {\n            ans.append(num % 8);\n            num /= 8;\n        }\n\n        System.out.println(ans.reverse());\n    }\n\n    public static void main(String[] args) {\n\n        Scanner sc = new Scanner(System.in);\n\n        int n = sc.nextInt();\n\n        convertToOctal(n);\n\n        sc.close();\n    }\n}",
+    "createdAt": "2026-06-26T10:50:55.870Z",
+    "category": "Conversion"
+  },
+  {
+    "id": "6w2f4yr",
+    "name": "Rotating the array K th  times.java",
+    "description": "Rotating the array K th  times.",
+    "level": "Medium",
+    "code": "package problems;\nimport java.util.*;\n\nclass Main {\n\t\n\tstatic void rotate(int arr[] , int left , int right) {\n\t\twhile(left <= right) {\n\t\t\tint temp = arr[left];\n\t\t\tarr[left] = arr[right];\n\t\t\tarr[right] =temp;\n\t\t\tleft++;\n\t\t\tright--;\n\t\t}\n\t}\n\t\t\n\tpublic static void main(String[] args) {\n\t\tint arr[] = {1,2,3,4,5,6};\n\t\tint k = 3;\n\t\trotate(arr, 0 , arr.length-1);\n\t\trotate(arr, 0 , k-1);\n\t\trotate(arr, k , arr.length -1 );\n\t\t\n\t\tfor(int num : arr) {\n\t\t\tSystem.out.print(num+\" \");\n\t\t}\n\t}\n}",
+    "createdAt": "2026-06-26T10:29:30.124Z",
+    "category": "Array"
+  },
+  {
+    "id": "4isqtvi",
+    "name": "Merging array.java",
+    "description": "merging array",
+    "level": "Medium",
+    "code": "static int[] merge(int arr1[], int arr2[]) {\n\n    int i = 0;\n    int j = 0;\n    int k = 0;\n\n    int[] ans = new int[arr1.length + arr2.length];\n\n    while (i < arr1.length && j < arr2.length) {\n\n        if (arr1[i] < arr2[j]) {\n            ans[k++] = arr1[i++];\n        } else {\n            ans[k++] = arr2[j++];\n        }\n    }\n\n    while (i < arr1.length) {\n        ans[k++] = arr1[i++];\n    }\n\n    while (j < arr2.length) {\n        ans[k++] = arr2[j++];\n    }\n\n    return ans;\n}",
+    "createdAt": "2026-06-26T10:17:19.976Z",
+    "category": "Array"
+  },
+  {
+    "id": "77ynfcj",
+    "name": "Delete the Middle Node of a Linked List.java",
+    "description": "https://claude.ai/chat/0da34ce5-07a8-4499-9d72-c565a4eb4a7b",
+    "level": "Medium",
+    "code": "class ListNode {\n    int val;\n    ListNode next;\n\n    ListNode(int val) {\n        this.val = val;\n    }\n}\n\npublic class Main {\n\n    static ListNode deleteMiddle(ListNode head) {\n\n        // Only one node\n        if (head == null || head.next == null) {\n            return null;\n        }\n\n        ListNode slow = head;\n        ListNode fast = head;\n        ListNode prev = null;\n\n        while (fast != null && fast.next != null) {\n\n            prev = slow;\n            slow = slow.next;\n            fast = fast.next.next;\n        }\n\n        // Delete middle\n        prev.next = slow.next;\n\n        return head;\n    }\n}",
+    "createdAt": "2026-06-26T09:57:53.265Z",
+    "category": "slow & fast"
+  },
+  {
+    "id": "7h3p6rb",
+    "name": "Find the Start of the Cycle.java",
+    "description": "https://claude.ai/chat/27a3c812-30c1-4fc9-b82d-e7b99b4acf4b",
+    "level": "Medium",
+    "code": "class ListNode {\n    int val;\n    ListNode next;\n\n    ListNode(int val) {\n        this.val = val;\n    }\n}\n\npublic class Main {\n\n    static ListNode detectCycle(ListNode head) {\n\n        ListNode slow = head;\n        ListNode fast = head;\n\n        // Step 1: Detect cycle\n        while (fast != null && fast.next != null) {\n\n            slow = slow.next;\n            fast = fast.next.next;\n\n            if (slow == fast) {\n\n                // Step 2: Find cycle start\n                ListNode ptr = head;\n\n                while (ptr != slow) {\n                    ptr = ptr.next;\n                    slow = slow.next;\n                }\n\n                return ptr;\n            }\n        }\n\n        return null;\n    }\n}",
+    "createdAt": "2026-06-26T09:50:52.700Z",
+    "category": "slow & fast"
+  },
+  {
+    "id": "y7far3j",
+    "name": "Length of the cycle .java",
+    "description": "Length of the cycle ",
+    "level": "Easy",
+    "code": "logic for finding the length of the cycle is after slow == fast , assigning count = 1; and inside while (ptr != slow) { ptr = ptr.next ; slow = slow.next ; count ++; } return count; ?",
+    "createdAt": "2026-06-26T09:49:48.259Z",
+    "category": "slow & fast"
+  },
+  {
+    "id": "b3afj1h",
+    "name": "New Snippet.java",
+    "description": "Quick Java logic piece",
+    "level": "Easy",
+    "code": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Hello, Java Snippet!\");\n    }\n}",
+    "createdAt": "2026-06-26T07:06:47.079Z"
+  },
+  {
+    "id": "7dpo8c8",
+    "name": "Counting occurance of the target.java",
+    "description": "Counting occurance of the target",
+    "level": "Medium",
+    "code": "package logic;\npublic class MyClass {\n\n    static int Ocount(int arr[] , int target , int idx , int count) {\n            if(idx == arr.length) {\n                    return count;\n            }\n            \n            if(arr[idx] == target) {\n                    count++;\n            }\n            return Ocount(arr, target , idx+1,count);\n    }\n        \n\n    public static void main(String[] args) {\n\n        int[] arr = {1,2,1,1,1,3};\n      System.out.println(Ocount(arr , 1 , 0, 0));\n    }\n}",
+    "createdAt": "2026-06-26T06:52:14.681Z",
+    "category": "recursion"
+  },
+  {
+    "id": "w3ccdsa",
+    "name": "Counting frequency of the particular character.java",
+    "description": "Counting frequency of the particular character",
+    "level": "Medium",
+    "code": "class MyClass {\n        static int fun(String str , char s , int idx,int count) {\n                if(idx == str.length()) {\n                        return count;\n                }\n                \n                if(str.charAt(idx) == s) {\n                        count ++;\n                } \n                return fun(str, s, idx+1, count);        \n                \n        }\n        \n        public static void main(String[] args) {\n                 String str = \"programmgging\";\n                 char s ='g';\n                System.out.println(fun(str ,s,0, 0));\n        }\n}",
+    "createdAt": "2026-06-26T06:51:43.964Z",
+    "category": "recursion"
+  },
+  {
+    "id": "qh4wra2",
+    "name": "Checking Palindrome.java",
+    "description": "Checking Palindrome",
+    "level": "Easy",
+    "code": "class MyClass {\n        static boolean fun(int arr[], int left , int right) {\n                if(left >= right) {\n                        return true;\n                }\n                \n                if(arr[left]  != arr[right]) {\n                        return false;\n                }\n                return fun(arr, left+1, right-1);\n        }\n        \n        public static void main(String[] args) {\n                  int arr[] = {2,4,3,4,2};\n                  System.out.println(fun(arr ,0 , arr.length-1));\n        }\n}",
+    "createdAt": "2026-06-26T06:51:21.183Z",
+    "category": "recursion"
+  },
+  {
+    "id": "pd1fjg2",
+    "name": "Finding target and returning idx.java",
+    "description": "Finding target and returning idx",
+    "level": "Medium",
+    "code": "class MyClass {\n        static int Find(int[] arr , int target,int idx ) {\n                if(idx == arr.length) { \n                        return -1;\n                }\n                \n                if(arr[idx] == target) {\n                        return idx;\n                }\n                return Find(arr, target , idx+1);\n        }\n        \n    public static void main(String[] args) {\n            int arr[] = {4,2,7,2,9};\n            int target = 2;\n   System.out.println(Find(arr , target, 0));\n        }\n}",
+    "createdAt": "2026-06-26T06:51:00.854Z",
+    "category": "recursion"
+  },
+  {
+    "id": "z83kt15",
+    "name": "Removing particular character from the String array.java",
+    "description": "Removing particular character from the String array",
+    "level": "Medium",
+    "code": "class MyClass {\n        static String removeChar(String[] str , int idx ) {\n                String ans = \"\";\n        if(idx == str.length) {\n                return \"\" ;\n        }\n        \n        if(str[idx].equals(\"p\")) {\n                return removeChar(str , idx+1);\n        } else {\n                ans += str[idx];        \n        }\n        return ans + removeChar(str , idx+1);\n        \n        }\n        \n    public static void main(String[] args) {\n    String str[] = {\"a\",\"p\",\"r\" , \"p\",\"w\"};\n   System.out.println(removeChar(str , 0));\n        }\n}",
+    "createdAt": "2026-06-26T06:50:36.135Z",
+    "category": "recursion"
+  },
+  {
+    "id": "fijta4g",
+    "name": "Checking array is sorted or not .java",
+    "description": "Checking array is sorted or not ",
+    "level": "Easy",
+    "code": "class MyClass {\n        static boolean sortCheck(int arr[], int idx) {\n        if(idx == arr.length - 1) {\n                return  true;\n        }\n        if(arr[idx] > arr[idx +1]) {\n                return false;\n        }\n        return sortCheck(arr, idx+1);\n        }\n        \n    public static void main(String[] args) {\n            int arr[]= {1,2, 45,60, 50};\n            \n            System.out.println(sortCheck(arr , 0));\n        }\n}",
+    "createdAt": "2026-06-26T06:50:16.025Z",
+    "category": "recursion"
+  },
+  {
+    "id": "5ljmxie",
+    "name": "Count Zeros in a digit .java",
+    "description": "Count Zeros in a digit ",
+    "level": "Easy",
+    "code": "class Main {\n        static int countZeros(int n) {\n                if(n == 0) {\n                        return 0;\n                }\n                if((n % 10) == 0) {\n                        return 1 + countZeros(n/10);\n                }\n                return countZeros(n/10);        \n        }\n        \n        public static void main(String[] args) {\n             System.out.println(countZeros(100030400));;\n        }\n}",
+    "createdAt": "2026-06-26T06:49:55.434Z",
+    "category": "recursion"
+  },
+  {
+    "id": "y0f0epu",
+    "name": "Reversing a String.java",
+    "description": "Reversing a String",
+    "level": "Easy",
+    "code": "class MyClass {\n\n        static void Reverse(String str , int idx) {\n                if(idx == str.length()) {\n                        return;\n                }\n                Reverse(str, idx+1);\n                System.out.print(str.charAt(idx));\n        }\n    public static void main(String[] args) {\n                String str = \"Anwar\";\n                int idx = 0 ;\n                \n                Reverse(str , 0);\n        }\n}",
+    "createdAt": "2026-06-26T06:49:34.902Z",
+    "category": "recursion"
+  },
+  {
+    "id": "5ogsmhr",
+    "name": "Sum of Given Array Elements.java",
+    "description": "Sum of Given Array Elements",
+    "level": "Easy",
+    "code": "class MyClass {\n        static int Sum(int arr[], int idx ) {\n                if(idx == arr.length ) {\n                        return 0;\n                }\n        return arr[idx] + Sum(arr , idx+1);\n                \n        }\n        public static void main(String[] args) {\n                int arr[] = {12,12,6,5};\n                int idx = 0;\n                System.out.println(Sum(arr , idx ));\n        }\n}",
+    "createdAt": "2026-06-26T06:49:15.178Z",
+    "category": "recursion"
+  },
+  {
+    "id": "4ry0g8f",
+    "name": "Reversing a digit.java",
+    "description": "Reversing a digit",
+    "level": "Easy",
+    "code": "public class MyClass {\n        static int sum(int n , int r) {\n                if(n == 0) {\n                        return r;\n                }\n                 r =r * 10 + (n % 10);\n                return   sum(n / 10,r);\n        }\n    public static void main(String[] args) {\n            System.out.println(sum(1234, 0));\n    }\n}",
+    "createdAt": "2026-06-26T06:48:49.481Z",
+    "category": "recursion"
+  },
+  {
+    "id": "vs8at0c",
+    "name": "Product of digit.java",
+    "description": "Product of digit",
+    "level": "Easy",
+    "code": "public class MyClass {\n        static int sum(int n , int p) {\n                if(n == 0) {\n                        return p;\n                }\n                 p =p * (n % 10);\n                return   sum(n / 10, p);\n        }\n    public static void main(String[] args) {\n            System.out.println(sum(1242, 1));\n    }\n}",
+    "createdAt": "2026-06-26T06:48:25.617Z",
+    "category": "recursion"
+  },
+  {
+    "id": "pcuee95",
+    "name": "Count digits.java",
+    "description": "Count digits",
+    "level": "Easy",
+    "code": "public class MyClass {\n        static int fact(int n) {\n                if(n == 0) {\n                        return 0;\n                }\n                \n                return 1 + fact( n / 10);\n        }\n\n    public static void main(String[] args) {\n            System.out.println(fact(1234567));\n    }\n}",
+    "createdAt": "2026-06-26T06:47:58.213Z",
+    "category": "recursion"
+  },
+  {
+    "id": "uf4actw",
+    "name": "Factorial.java",
+    "description": "Factorial",
+    "level": "Easy",
+    "code": "public class MyClass {\n        static int fact(int n) {\n                if(n == 1) {\n                        return 1;\n                }\n                \n                return n * fact(n-1);\n        }\n\n    public static void main(String[] args) {\n            System.out.println(fact(5));\n    }\n}",
+    "createdAt": "2026-06-26T06:47:40.275Z",
+    "category": "recursion"
+  },
+  {
+    "id": "uzhxtl6",
+    "name": "Sum of n numbers.java",
+    "description": "Sum of n numbers",
+    "level": "Easy",
+    "code": "public class MyClass {\n        static int num(int n) {\n                if(n == 0) {\n                        return 0;\n                }\n                return n + num(n-1);\n        }\npublic static void main(String[] args) {\n        System.out.println(num(5));\n        }\n}\n",
+    "createdAt": "2026-06-26T06:47:19.308Z",
+    "category": "recursion"
+  },
+  {
+    "id": "uy6393o",
+    "name": "Odd numbers.java",
+    "description": "Odd numbers",
+    "level": "Easy",
+    "code": "public class MyClass {\n        static void num(int n) {\n                if( n == 0) {\n                        return;\n                }\n                if(n % 2 == 1) {\n                        System.out.println(n +\" Odd\");\n                }\n                num(n -1);\n        }\npublic static void main(String[] args) {\n        num(10);\n        }\n}\n",
+    "createdAt": "2026-06-26T06:46:55.430Z",
+    "category": "recursion"
+  },
+  {
+    "id": "k9w0xz4",
+    "name": "Even numbers.java",
+    "description": "Even numbers",
+    "level": "Easy",
+    "code": "public class MyClass {\n        static void num(int n) {\n                if( n == 0) {\n                        return;\n                }\n                if(n % 2 == 0) {\n                        System.out.println(n +\" Even\");\n                }\n                num(n -1);\n        }\npublic static void main(String[] args) {\n        num(10);\n        }\n}\n",
+    "createdAt": "2026-06-26T06:43:32.773Z",
+    "category": "recursion"
+  },
+  {
+    "id": "supnv1j",
+    "name": "Max number.java",
+    "description": "Max number",
+    "level": "Easy",
+    "code": "public class MyClass {\n        static int num(int n , int max) {\n                if( n == 0) {\n                        return max;\n                }        \n                max = Math.max(max, n % 10);\n                return num(n / 10 , max);        \n        }\npublic static void main(String[] args) {\n        System.out.println(num(5729, 0));\n        }\n}\n",
+    "createdAt": "2026-06-26T06:21:13.243Z",
+    "category": "recursion"
+  },
+  {
+    "id": "vzackh8",
+    "name": "Questions.java",
+    "description": "Backtracking questions",
+    "level": "Hard",
+    "code": "Core questions\n\nGenerate all subsets of an array.\nGenerate all subsets with duplicates removed.\nGenerate all combinations of n choose k.\nGenerate all valid parentheses for n pairs.\nCombination Sum.\nCombination Sum II.\nPalindrome Partitioning.\nMaximum Score Words Formed by Letters.\nThe Number of Beautiful Subsets.\n\nExtra practice\n\nPermutations of a string or array.\nN-Queens style placement problems.\nWord search in a grid using DFS/backtracking.\nRat in a maze style path-finding.",
+    "createdAt": "2026-06-25T21:47:00.618Z",
+    "category": "Backtracking"
+  },
+  {
+    "id": "zm1n32h",
+    "name": "Questions.java",
+    "description": "Tree all questions",
+    "level": "Hard",
+    "code": "Basic tree questions\n\nInorder traversal of a binary tree.\nPreorder traversal of a binary tree.\nPostorder traversal of a binary tree.\nLevel order traversal of a tree.\nHeight of a binary tree.\nCount total nodes in a tree.\nCount leaf nodes in a tree.\nCount internal nodes in a tree.\nFind the maximum node value in a tree.\nFind the minimum node value in a tree.\n\n\nBST questions\n\nInsert a value into a BST.\nSearch for a value in a BST.\nFind the minimum/maximum value in a BST.\nCheck whether a binary tree is a BST.\nDelete a node from a BST.\nComparison questions\nCheck if two trees are identical.\nCheck if a tree is symmetric\nFind the mirror of a binary tree.\nFind the lowest common ancestor.\nConvert a binary tree to its mirror form.\n\n\nMedium and hard\nZigzag level order traversal.\nRight view of a binary tree.\nTop view of a binary tree.\nBoundary traversal of a binary tree.\nTree edge flipping with pattern matching.\nTree max score problem.\n\n",
+    "createdAt": "2026-06-25T21:43:17.499Z",
+    "category": "trees"
+  },
+  {
+    "id": "bq4lyzl",
+    "name": "Two Sum pattern.java",
+    "description": "Use a HashMap (Two Sum pattern) for If the array is NOT sorted",
+    "level": "Medium",
+    "code": "static int[] findTwoItems(int[] prices, int budget) {\n\n    HashMap<Integer, Integer> map = new HashMap<>();\n\n    for (int i = 0; i < prices.length; i++) {\n\n        int complement = budget - prices[i];\n\n        if (map.containsKey(complement)) {\n            return new int[] { map.get(complement), i };\n        }\n\n        map.put(prices[i], i);\n    }\n\n    return new int[] {};\n}",
+    "createdAt": "2026-06-25T13:51:43.681Z",
+    "category": "two pointer"
+  },
+  {
+    "id": "0eq7trp",
+    "name": "Maximum water container.java",
+    "description": "maximum water container",
+    "level": "Medium",
+    "code": "class Main {\n\n    static int maxArea(int[] height) {\n\n        int left = 0;\n        int right = height.length - 1;\n\n        int maxWater = 0;\n\n        while (left < right) {\n\n            int width = right - left;\n\n            int ht = Math.min(height[left], height[right]);\n\n            int currWater = width * ht;\n\n            maxWater = Math.max(maxWater, currWater);\n\n            if (height[left] < height[right]) {\n                left++;\n            } else {\n                right--;\n            }\n        }\n\n        return maxWater;\n    }\n\n    public static void main(String[] args) {\n\n        int[] height = {1, 8, 6, 2, 5, 4, 8, 3, 7};\n\n        System.out.println(maxArea(height));\n    }\n}",
+    "createdAt": "2026-06-25T13:50:42.248Z",
+    "category": "two pointer"
+  },
+  {
+    "id": "9onlgov",
+    "name": "palindrome Checking in list .java",
+    "description": "palindrome Checking in list ",
+    "level": "Medium",
+    "code": "package problems;\n\nimport java.util.ArrayList;\n\nclass Node {\n    int data;\n    Node next;\n\n    Node(int data) {\n        this.data = data;\n        this.next = null;\n    }\n}\n\npublic class Main {\n\n    static boolean isPalindrome(Node head) {\n\n        if(head == null || head.next == null) {\n        \treturn true;\n        }\n        \n        ArrayList<Integer>  list =  new ArrayList<>();\n        \n        Node temp = head;\n        \n        while(temp != null) {\n        \tlist.add(temp.data);\n        \ttemp = temp.next;\n        }\n        \n        int left = 0;\n        int right =  list.size()-1;\n        \n        \n        while(left <= right) {\n        \t\n        \tif(list.get(left) != list.get(right)) {\n        \t\treturn false;\n        \t}\n        \tleft ++;\n        \tright --;\n        }\n        \n        return true;\n    }\n\n    static void display(Node head) {\n        Node temp = head;\n\n        while(temp != null) {\n            System.out.print(temp.data + \" -> \");\n            temp = temp.next;\n        }\n\n        System.out.println(\"null\");\n    }\n\n    public static void main(String[] args) {\n\n        Node head = new Node(1);\n        head.next = new Node(2);\n        head.next.next = new Node(2);\n        head.next.next.next = new Node(1);\n//        head.next.next.next.next = new Node(4);\n\n        display(head);\n\n        System.out.println(isPalindrome(head));\n    }\n}",
+    "createdAt": "2026-06-25T09:10:44.710Z",
+    "category": "linkedList"
+  },
+  {
+    "id": "9o0s370",
+    "name": "Detect Cycle in Linked List.java",
+    "description": "Detect Cycle in Linked List (Floyd's Algorithm)",
+    "level": "Easy",
+    "code": "static boolean hasCycle(Node head) {\n\n    Node slow = head;\n    Node fast = head;\n\n    while(fast != null && fast.next != null) {\n\n        slow = slow.next;\n        fast = fast.next.next;\n\n        if(slow == fast) {\n            return true;\n        }\n    }\n\n    return false;\n}",
+    "createdAt": "2026-06-25T08:43:19.754Z",
+    "category": "slow & fast"
+  },
+  {
+    "id": "gypveum",
+    "name": "Find Middle of Linked List.java",
+    "description": "Find Middle of Linked List",
+    "level": "Medium",
+    "code": "class Node {\n    int data;\n    Node next;\n\n    Node(int data) {\n        this.data = data;\n    }\n}\n\nclass Main {\n\n    static Node findMiddle(Node head) {\n\n        Node slow = head;\n        Node fast = head;\n\n        while(fast != null && fast.next != null) {\n            slow = slow.next;\n            fast = fast.next.next;\n        }\n\n        return slow;\n    }\n}",
+    "createdAt": "2026-06-25T08:42:03.441Z",
+    "category": "slow & fast"
+  },
+  {
+    "id": "5zz3gaj",
+    "name": "Previous Smaller Element.java",
+    "description": "Previous Smaller Element (PSE)",
+    "level": "Medium",
+    "code": "import java.util.Stack;\n\nclass Main {\n\n    static int[] previousSmaller(int[] arr) {\n\n        int n = arr.length;\n        int[] ans = new int[n];\n\n        Stack<Integer> st = new Stack<>();\n\n        for (int i = 0; i < n; i++) {\n\n            while (!st.isEmpty() && st.peek() >= arr[i]) {\n                st.pop();\n            }\n\n            ans[i] = st.isEmpty() ? -1 : st.peek();\n\n            st.push(arr[i]);\n        }\n\n        return ans;\n    }\n\n    public static void main(String[] args) {\n\n        int[] arr = {4, 10, 5, 8, 20, 15, 3, 12};\n\n        int[] ans = previousSmaller(arr);\n\n        for (int x : ans) {\n            System.out.print(x + \" \");\n        }\n    }\n}",
+    "createdAt": "2026-06-24T12:33:49.481Z",
+    "category": "Stack"
+  },
+  {
+    "id": "2tiaexg",
+    "name": "Previous Greater Element.java",
+    "description": "Previous Greater Element (PGE)",
+    "level": "Medium",
+    "code": "import java.util.Stack;\n\nclass Main {\n\n    static int[] previousGreater(int[] arr) {\n\n        int n = arr.length;\n        int[] ans = new int[n];\n\n        Stack<Integer> st = new Stack<>();\n\n        for (int i = 0; i < n; i++) {\n\n            while (!st.isEmpty() && st.peek() <= arr[i]) {\n                st.pop();\n            }\n\n            ans[i] = st.isEmpty() ? -1 : st.peek();\n\n            st.push(arr[i]);\n        }\n\n        return ans;\n    }\n\n    public static void main(String[] args) {\n\n        int[] arr = {15, 10, 18, 12, 4, 6, 2, 8};\n\n        int[] ans = previousGreater(arr);\n\n        for (int x : ans) {\n            System.out.print(x + \" \");\n        }\n    }\n}",
+    "createdAt": "2026-06-24T12:31:58.416Z",
+    "category": "Stack"
+  },
+  {
+    "id": "p4o5vl8",
+    "name": "Next Smaller Element.java",
+    "description": "Next Smaller Element (NSE)",
+    "level": "Medium",
+    "code": "package problems;\n\nimport java.util.Stack;\n\nclass Main {\n    static int[] nextGreatestElement(int[] arr) {\n        Stack<Integer> st = new Stack<>();\n        int [] ans = new int[arr.length];\n        \n        for(int i= arr.length-1 ; i >= 0; i--) {\n        \t\n        \twhile(!st.isEmpty() && st.peek() >= arr[i]) {\n        \t\tst.pop();\n        \t}\n        \tans[i] = st.isEmpty() ? -1 : st.peek();\n        \tst.push(arr[i]);\n        }\n        return ans;\n    }\n\n    public static void main(String[] args) {\n       int arr[] = {4, 8, 5, 2, 25};\n\n      int ans[] = nextGreatestElement(arr);\n      \n      for(int num : ans) {\n    \t  System.out.print(num+\" \");\n      }\n    }\n}",
+    "createdAt": "2026-06-24T12:27:27.945Z",
+    "category": "Stack"
+  },
+  {
+    "id": "c8gkc9f",
+    "name": "Next greater Element.java",
+    "description": "Next greater Element",
+    "level": "Medium",
+    "code": "import java.util.Stack;\n\nclass Main {\n\n    static int[] nextGreater(int[] arr) {\n\n        int n = arr.length;\n\n        int[] ans = new int[n];\n\n        Stack<Integer> st = new Stack<>();\n\n        for (int i = n - 1; i >= 0; i--) {\n            // 3  check the condition\n            while (!st.isEmpty() && st.peek() <= arr[i]) {\n                st.pop();\n            }\n\n            // First check the stack\n            ans[i] = st.isEmpty() ? -1 : st.peek();\n            // then add\n            st.push(arr[i]);\n        }\n\n        return ans;\n    }\n\n    public static void main(String[] args) {\n\n        int[] arr = {2, 1, 2, 4, 3};\n\n        int[] ans = nextGreater(arr);\n\n        for (int x : ans) {\n            System.out.print(x + \" \");\n        }\n    }\n}",
+    "createdAt": "2026-06-24T12:10:51.289Z",
+    "category": "Stack"
+  },
+  {
+    "id": "qf72ioj",
+    "name": "Baseball Game.java",
+    "description": "Baseball Game (LeetCode 682)",
+    "level": "Medium",
+    "code": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Hello, Java Snippet!\");\n    }\n}import java.util.Stack;\n\nclass Main {\n    static int calPoints(String[] ops) {\n        Stack<Integer> st = new Stack<>();\n        for (String op : ops) {\n\n            if (op.equals(\"+\")) {\n\n                int first = st.pop();\n                int second = st.peek();\n\n                st.push(first);\n\n                st.push(first + second);\n            }\n            else if (op.equals(\"D\")) {\n\n                st.push(2 * st.peek());\n            }\n            else if (op.equals(\"C\")) {\n                st.pop();\n            }\n            else {\n\n                st.push(Integer.parseInt(op));\n            }\n        }\n\n        int sum = 0;\n\n        while (!st.isEmpty()) {\n            sum += st.pop();\n        }\n        return sum;\n    }\n\n    public static void main(String[] args) {\n        String[] ops = {\"5\",\"2\",\"C\",\"D\",\"+\"};\n\n        System.out.println(calPoints(ops));\n    }\n}",
+    "createdAt": "2026-06-24T10:39:06.622Z",
+    "category": "Stack"
+  },
+  {
+    "id": "73p861i",
+    "name": "Remove All Adjacent Duplicates in String.java",
+    "description": "Remove All Adjacent Duplicates in String (LeetCode 1047)",
+    "level": "Medium",
+    "code": "package problems;\nimport java.util.Stack;\n\nclass Main {\n\tstatic String removeAdjecent(String s) {\n\t\tStack<Character> st = new Stack<>();\n\t\tfor(char ch : s.toCharArray()) {\n\t\t\tif(!st.isEmpty() && st.peek() == ch ) {\n\t\t\t\tst.pop();\n\t\t\t} else {\n\t\t\t\tst.push(ch);\n\t\t\t}\t\n\t\t}\n\t\tStringBuilder ans = new StringBuilder();\n\t\t\n\t\twhile(!st.isEmpty()) {\n\t\t\tans.append(st.pop());\n\t\t}\n\t\treturn ans.reverse().toString();\n\t}\n\tpublic static void main(String[] args) {\n\t\tSystem.out.println(removeAdjecent(\"abbaca\"));\n\t}\n}",
+    "createdAt": "2026-06-24T10:21:58.121Z",
+    "category": "Stack"
+  },
+  {
+    "id": "t18ragw",
+    "name": "ValidParanthesisCheck.java",
+    "description": "Stack valide paranthesis checking",
+    "level": "Medium",
+    "code": "package problems;\n\nimport java.util.Stack;\n\nclass Main {\n\n    static boolean isValid(String s) {\n\n        Stack<Character> st = new Stack<>();\n\n        for (char ch : s.toCharArray()) {\n\n            if (ch == '(' || ch == '[' || ch == '{') {\n                st.push(ch);\n                // it adds  ( , [ , { first and then closing side \n            } \n            else {\n\n            // If there where no ( , [ , } added in stack that means false  if empty means \n                if (st.isEmpty()) {\n                    return false;\n                }\n\n                char top = st.pop(); // ([{ if this is the order than at last top will be { , popping top = { ,\n\n                if (ch == ')' && top != '(') {\n                    return false;\n                }\n\n                if (ch == ']' && top != '[') {\n                    return false;\n                }\n\n                if (ch == '}' && top != '{') {\n                    return false;\n                }\n            }\n        }\n\n        return st.isEmpty();\n    }\n\n    public static void main(String[] args) {\n        System.out.println(isValid(\"()[]{}\"));\n    }\n}",
+    "createdAt": "2026-06-24T09:37:38.849Z",
+    "category": "Stack"
+  },
+  {
     "id": "psexjuy",
     "name": "Slow_Fast.java",
     "description": "slow fast in linkedList",
     "level": "Medium",
-    "code": "boolean hasCycle(Node head) {\n    Node slow = head;\n    Node fast = head;\n    while (fast != null && fast.next != null) {\n        slow = slow.next;\n        fast = fast.next.next;\n        if (slow == fast) {\n            return true;\n        }\n    }\n    return false;\n}",
+    "code": "// https://claude.ai/chat/e126aafa-5675-45a9-96a6-7a7417a14870\nboolean hasCycle(Node head) {\n    Node slow = head;\n    Node fast = head;\n    while (fast != null && fast.next != null) {\n        slow = slow.next;\n        fast = fast.next.next;\n        if (slow == fast) {\n            return true;\n        }\n    }\n    return false;\n}",
     "createdAt": "2026-06-23T18:29:36.028Z",
     "category": "Slow_Fast"
   },
@@ -181,11 +693,11 @@
   },
   {
     "id": "rearyp9",
-    "name": "MyClass.java",
+    "name": "QuickSort.java",
     "code": "package logic;\n\nclass MyClass {\n\n    public static int partition(int arr[], int low, int high) {\n\n        int pivot = arr[high];\n        int i = low - 1;\n\n        for(int j = low; j < high; j++) {\n\n            if(arr[j] < pivot) {\n\n                i++;\n\n                int temp = arr[i];\n                arr[i] = arr[j];\n                arr[j] = temp;\n            }\n        }\n\n        int temp = arr[i + 1];\n        arr[i + 1] = arr[high];\n        arr[high] = temp;\n\n        return i + 1;\n    }\n\n    public static void quickSort(int arr[], int low, int high) {\n\n        if(low < high) {\n\n            int pivotIndex = partition(arr, low, high);\n\n            quickSort(arr, low, pivotIndex - 1);\n            quickSort(arr, pivotIndex + 1, high);\n        }\n    }\n\n    public static void main(String[] args) {\n\n        int arr[] = {1, 2, 3, 2, 32, 23, 31, 15};\n\n        quickSort(arr, 0, arr.length - 1);\n\n        for(int x : arr) {\n            System.out.print(x + \" \");\n        }\n    }\n}",
     "createdAt": "2026-06-13T22:07:34.673Z",
     "description": "QuickSort",
-    "level": "Easy",
+    "level": "Medium",
     "category": "Sorting"
   }
 ]
