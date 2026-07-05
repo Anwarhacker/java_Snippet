@@ -1,5 +1,14 @@
 [
   {
+    "id": "vwnmhqp",
+    "name": "Transpose matrix.java",
+    "description": "Transpose matrix",
+    "level": "Easy",
+    "code": "package a;\n\nimport java.util.Scanner;\n\nclass Main {\n\tpublic static void main(String[] args) {\n\t\tScanner sc = new Scanner(System.in);\n\t\tint n =2;\n\t\tint m =2;\n\t\tint arr[][] = new int[n][m];\n\n\t\tfor(int i=0;i<n;i++){\n\t\t    for(int j=0;j<m;j++){\n\t\t        arr[i][j]=sc.nextInt();\n\t\t    }\n\t\t    System.out.println();\n\t\t}\n\t\t\n\t\tSystem.out.println(\"Original matrix : \");\n\t\tfor(int i=0;i<n;i++){\n\t\t\tfor(int j=0;j<m;j++){\n\t\t\t\tSystem.out.print(arr[i][j]+\" \");\n\t\t\t}\n\t\t\tSystem.out.println();\n\t\t}\n\t\t\n\t\tSystem.out.println(\"Transpose matrix : \");\n\t\tfor(int i=0;i<n;i++){\n\t\t\tfor(int j=0;j<m;j++){\n\t\t\t\tSystem.out.print(arr[j][i]+\" \");\n\t\t\t}\n\t\t\tSystem.out.println();\n\t\t}\n\t}\n}",
+    "createdAt": "2026-07-04T14:43:28.286Z",
+    "category": "Array"
+  },
+  {
     "id": "kuaf7io",
     "name": "Question",
     "description": "Question",
@@ -444,14 +453,14 @@
     "name": "Find Middle of Linked List.java",
     "description": "Find Middle of Linked List",
     "level": "Medium",
-    "code": "class Node {\n    int data;\n    Node next;\n\n    Node(int data) {\n        this.data = data;\n    }\n}\n\nclass Main {\n\n    static Node findMiddle(Node head) {\n\n        Node slow = head;\n        Node fast = head;\n\n        while(fast != null && fast.next != null) {\n            slow = slow.next;\n            fast = fast.next.next;\n        }\n\n        return slow;\n    }\n}",
+    "code": "package a;\n\npublic class Main {\n\n    // Node Class\n    static class Node {\n        int data;\n        Node next;\n\n        Node(int data) {\n            this.data = data;\n            this.next = null;\n        }\n    }\n\n    // Find Middle Node (Returns second middle for even length)\n    static Node findMiddle(Node head) {\n\n        if (head == null) {\n            return null;\n        }\n\n        Node slow = head;\n        Node fast = head;\n\n        while (fast != null && fast.next != null) {\n            slow = slow.next;\n            fast = fast.next.next;\n        }\n\n        return slow;\n    }\n\n    // Display Linked List\n    static void display(Node head) {\n\n        Node temp = head;\n\n        while (temp != null) {\n            System.out.print(temp.data + \" -> \");\n            temp = temp.next;\n        }\n\n        System.out.println(\"null\");\n    }\n\n    public static void main(String[] args) {\n\n        // ===================== ODD =====================\n\n        Node head1 = new Node(1);\n        head1.next = new Node(2);\n        head1.next.next = new Node(3);\n        head1.next.next.next = new Node(4);\n        head1.next.next.next.next = new Node(5);\n\n        System.out.println(\"Odd Linked List:\");\n        display(head1);\n\n        Node mNode1 = findMiddle(head1);\n\n        System.out.println(\"Middle Node Data: \" + mNode1.data);\n\n        // ===================== EVEN =====================\n\n        Node head2 = new Node(1);\n        head2.next = new Node(2);\n        head2.next.next = new Node(3);\n        head2.next.next.next = new Node(4);\n\n        System.out.println(\"\\nEven Linked List:\");\n        display(head2);\n\n        Node mNode2 = findMiddle(head2);\n\n        System.out.println(\"Middle Node Data: \" + mNode2.data);\n\n        // ===================== SINGLE =====================\n\n        Node head3 = new Node(42);\n\n        System.out.println(\"\\nSingle Node Linked List:\");\n        display(head3);\n\n        Node mNode3 = findMiddle(head3);\n\n        System.out.println(\"Middle Node Data: \" + mNode3.data);\n\n        // ===================== EMPTY =====================\n\n        Node head4 = null;\n\n        System.out.println(\"\\nEmpty Linked List:\");\n        display(head4);\n\n        Node mNode4 = findMiddle(head4);\n\n        if (mNode4 == null) {\n            System.out.println(\"List is empty.\");\n        } else {\n            System.out.println(\"Middle Node Data: \" + mNode4.data);\n        }\n    }\n}",
     "createdAt": "2026-06-25T08:42:03.441Z",
     "category": "slow & fast"
   },
   {
     "id": "5zz3gaj",
     "name": "Previous Smaller Element.java",
-    "description": "Previous Smaller Element (PSE)",
+    "description": "-1 4 4 5 8 8 -1 3",
     "level": "Medium",
     "code": "import java.util.Stack;\n\nclass Main {\n\n    static int[] previousSmaller(int[] arr) {\n\n        int n = arr.length;\n        int[] ans = new int[n];\n\n        Stack<Integer> st = new Stack<>();\n\n        for (int i = 0; i < n; i++) {\n\n            while (!st.isEmpty() && st.peek() >= arr[i]) {\n                st.pop();\n            }\n\n            ans[i] = st.isEmpty() ? -1 : st.peek();\n\n            st.push(arr[i]);\n        }\n\n        return ans;\n    }\n\n    public static void main(String[] args) {\n\n        int[] arr = {4, 10, 5, 8, 20, 15, 3, 12};\n\n        int[] ans = previousSmaller(arr);\n\n        for (int x : ans) {\n            System.out.print(x + \" \");\n        }\n    }\n}",
     "createdAt": "2026-06-24T12:33:49.481Z",
@@ -460,25 +469,25 @@
   {
     "id": "2tiaexg",
     "name": "Previous Greater Element.java",
-    "description": "Previous Greater Element (PGE)",
+    "description": "-1 -1 8 5 -1",
     "level": "Medium",
-    "code": "import java.util.Stack;\n\nclass Main {\n\n    static int[] previousGreater(int[] arr) {\n\n        int n = arr.length;\n        int[] ans = new int[n];\n\n        Stack<Integer> st = new Stack<>();\n\n        for (int i = 0; i < n; i++) {\n\n            while (!st.isEmpty() && st.peek() <= arr[i]) {\n                st.pop();\n            }\n\n            ans[i] = st.isEmpty() ? -1 : st.peek();\n\n            st.push(arr[i]);\n        }\n\n        return ans;\n    }\n\n    public static void main(String[] args) {\n\n        int[] arr = {15, 10, 18, 12, 4, 6, 2, 8};\n\n        int[] ans = previousGreater(arr);\n\n        for (int x : ans) {\n            System.out.print(x + \" \");\n        }\n    }\n}",
+    "code": "package problems;\n\nimport java.util.Stack;\n\nclass Main {\n\n    static int[] previousGreaterElement(int[] arr) {\n\n        Stack<Integer> st = new Stack<>();\n        int[] ans = new int[arr.length];\n\n        for (int i = 0; i < arr.length; i++) {\n\n            while (!st.isEmpty() && st.peek() <= arr[i]) {\n                st.pop();\n            }\n\n            ans[i] = st.isEmpty() ? -1 : st.peek();\n\n            st.push(arr[i]);\n        }\n\n        return ans;\n    }\n\n    public static void main(String[] args) {\n\n        int[] arr = {4, 8, 5, 2, 25};\n\n        int[] ans = previousGreaterElement(arr);\n\n        for (int num : ans) {\n            System.out.print(num + \" \");\n        }\n    }\n}",
     "createdAt": "2026-06-24T12:31:58.416Z",
     "category": "Stack"
   },
   {
     "id": "p4o5vl8",
     "name": "Next Smaller Element.java",
-    "description": "Next Smaller Element (NSE)",
+    "description": "Output : 2 5 2 -1 -1",
     "level": "Medium",
-    "code": "package problems;\n\nimport java.util.Stack;\n\nclass Main {\n    static int[] nextGreatestElement(int[] arr) {\n        Stack<Integer> st = new Stack<>();\n        int [] ans = new int[arr.length];\n        \n        for(int i= arr.length-1 ; i >= 0; i--) {\n        \t\n        \twhile(!st.isEmpty() && st.peek() >= arr[i]) {\n        \t\tst.pop();\n        \t}\n        \tans[i] = st.isEmpty() ? -1 : st.peek();\n        \tst.push(arr[i]);\n        }\n        return ans;\n    }\n\n    public static void main(String[] args) {\n       int arr[] = {4, 8, 5, 2, 25};\n\n      int ans[] = nextGreatestElement(arr);\n      \n      for(int num : ans) {\n    \t  System.out.print(num+\" \");\n      }\n    }\n}",
+    "code": "package problems;\n\nimport java.util.Stack;\n\nclass Main {\n\n    static int[] nextSmallerElement(int[] arr) {\n\n        Stack<Integer> st = new Stack<>();\n        int[] ans = new int[arr.length];\n\n        for (int i = arr.length - 1; i >= 0; i--) {\n\n            while (!st.isEmpty() && st.peek() >= arr[i]) {\n                st.pop();\n            }\n\n            ans[i] = st.isEmpty() ? -1 : st.peek();\n\n            st.push(arr[i]);\n        }\n\n        return ans;\n    }\n\n    public static void main(String[] args) {\n\n        int[] arr = {4, 8, 5, 2, 25};\n\n        int[] ans = nextSmallerElement(arr);\n\n        for (int num : ans) {\n            System.out.print(num + \" \");\n        }\n    }\n}",
     "createdAt": "2026-06-24T12:27:27.945Z",
     "category": "Stack"
   },
   {
     "id": "c8gkc9f",
     "name": "Next greater Element.java",
-    "description": "Next greater Element",
+    "description": "output : 4  2  4  -1  -1",
     "level": "Medium",
     "code": "import java.util.Stack;\n\nclass Main {\n\n    static int[] nextGreater(int[] arr) {\n\n        int n = arr.length;\n\n        int[] ans = new int[n];\n\n        Stack<Integer> st = new Stack<>();\n\n        for (int i = n - 1; i >= 0; i--) {\n            // 3  check the condition\n            while (!st.isEmpty() && st.peek() <= arr[i]) {\n                st.pop();\n            }\n\n            // First check the stack\n            ans[i] = st.isEmpty() ? -1 : st.peek();\n            // then add\n            st.push(arr[i]);\n        }\n\n        return ans;\n    }\n\n    public static void main(String[] args) {\n\n        int[] arr = {2, 1, 2, 4, 3};\n\n        int[] ans = nextGreater(arr);\n\n        for (int x : ans) {\n            System.out.print(x + \" \");\n        }\n    }\n}",
     "createdAt": "2026-06-24T12:10:51.289Z",
