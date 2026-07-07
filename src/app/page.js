@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef, useMemo } from "react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
+import { vscDarkPlus, oneLight, shadesOfPurple, nord } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 // Inline SVG Icons
 const IconFolder = () => (
@@ -122,6 +122,28 @@ export default function Home() {
   const [parentPath, setParentPath] = useState(null);
   const [items, setItems] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
+  const [theme, setTheme] = useState("midnight");
+
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("localspace-theme");
+    if (savedTheme) {
+      setTheme(savedTheme);
+    }
+  }, []);
+
+  const handleThemeChange = (newTheme) => {
+    setTheme(newTheme);
+    localStorage.setItem("localspace-theme", newTheme);
+  };
+
+  const getSyntaxTheme = () => {
+    switch (theme) {
+      case "alabaster": return oneLight;
+      case "cyberpunk": return shadesOfPurple;
+      case "emerald": return nord;
+      default: return vscDarkPlus;
+    }
+  };
   
   // Custom Bookmarks/Sidebar Paths
   const [bookmarks, setBookmarks] = useState([]);
@@ -822,7 +844,7 @@ export default function Home() {
 
   return (
     <div 
-      className={`app-container ${showJavaLab ? "lab-zen-mode" : ""} ${isSidebarCollapsed ? "sidebar-collapsed" : ""}`}
+      className={`app-container theme-${theme} ${showJavaLab ? "lab-zen-mode" : ""} ${isSidebarCollapsed ? "sidebar-collapsed" : ""}`}
       onDragEnter={handleDragEnter}
       onDragLeave={handleDragLeave}
       onDragOver={handleDragOver}
@@ -868,7 +890,20 @@ export default function Home() {
             </form>
           )}
 
-          <div style={{ width: "120px" }}></div> {/* balance the header layout */}
+          <div className="theme-selector-container" style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+            <span style={{ fontSize: "0.75rem", color: "var(--text-muted)", fontWeight: "600" }}>THEME:</span>
+            <select
+              value={theme}
+              onChange={(e) => handleThemeChange(e.target.value)}
+              className="text-input"
+              style={{ padding: "6px 12px", width: "120px", fontSize: "0.8rem", cursor: "pointer", background: "var(--bg-input)" }}
+            >
+              <option value="midnight">🌚 Midnight</option>
+              <option value="alabaster">☀️ Alabaster</option>
+              <option value="cyberpunk">🦄 Cyberpunk</option>
+              <option value="emerald">🌲 Emerald</option>
+            </select>
+          </div>
         </header>
       )}
 
@@ -1065,9 +1100,22 @@ export default function Home() {
                         <div className="lab-main-title">Java Code Snippets</div>
                       </div>
                     </div>
-                    <button className="btn-primary" onClick={handleCreateSnippet}>
-                      <IconPlus /> New Snippet
-                    </button>
+                    <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                      <select 
+                        value={theme} 
+                        onChange={(e) => handleThemeChange(e.target.value)}
+                        className="text-input"
+                        style={{ padding: "6px 12px", width: "125px", fontSize: "0.8rem", cursor: "pointer", background: "var(--bg-input)" }}
+                      >
+                        <option value="midnight">🌚 Midnight</option>
+                        <option value="alabaster">☀️ Alabaster</option>
+                        <option value="cyberpunk">🦄 Cyberpunk</option>
+                        <option value="emerald">🌲 Emerald</option>
+                      </select>
+                      <button className="btn-primary" onClick={handleCreateSnippet}>
+                        <IconPlus /> New Snippet
+                      </button>
+                    </div>
                   </div>
 
                   <div className="lab-content-split">
@@ -1278,7 +1326,7 @@ export default function Home() {
                               <div className="syntax-highlighter-wrapper">
                                 <SyntaxHighlighter 
                                   language="java" 
-                                  style={vscDarkPlus}
+                                  style={getSyntaxTheme()}
                                   customStyle={{
                                     margin: 0,
                                     padding: '20px',

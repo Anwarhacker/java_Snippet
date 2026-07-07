@@ -1,5 +1,22 @@
 [
   {
+    "id": "07iu5ph",
+    "name": "DoublyLinkedList.java",
+    "description": "DoublyLinkedList",
+    "level": "Medium",
+    "code": "class Node {\n    int data;\n    Node next;\n    Node prev;\n\n    Node(int data) {\n        this.data = data;\n        this.next = null;\n        this.prev = null;\n    }\n}\n\nclass DoublyLinkedList {\n\n    Node head;\n    Node tail;\n\n    // Insert at beginning\n    void addFirst(int data) {\n\n        Node newNode = new Node(data);\n\n        if (head == null) {\n            head = tail = newNode;\n            return;\n        }\n\n        newNode.next = head;\n        head.prev = newNode;\n        head = newNode;\n    }\n\n    // Insert at end\n    void addLast(int data) {\n\n        Node newNode = new Node(data);\n\n        if (head == null) {\n            head = tail = newNode;\n            return;\n        }\n\n        tail.next = newNode;\n        newNode.prev = tail;\n        tail = newNode;\n    }\n\n    // Delete first node\n    void deleteFirst() {\n\n        if (head == null) {\n            System.out.println(\"List is empty\");\n            return;\n        }\n\n        // Only one node\n        if (head == tail) {\n            head = tail = null;\n            return;\n        }\n\n        head = head.next;\n        head.prev = null;\n    }\n\n    // Delete last node\n    void deleteLast() {\n\n        if (head == null) {\n            System.out.println(\"List is empty\");\n            return;\n        }\n\n        // Only one node\n        if (head == tail) {\n            head = tail = null;\n            return;\n        }\n\n        tail = tail.prev;\n        tail.next = null;\n    }\n\n    // Display from head to tail\n    void display() {\n\n        if (head == null) {\n            System.out.println(\"List is empty\");\n            return;\n        }\n\n        Node temp = head;\n\n        while (temp != null) {\n            System.out.print(temp.data + \" -> \");\n            temp = temp.next;\n        }\n\n        System.out.println(\"null\");\n    }\n\n    // Display from tail to head\n    void displayReverse() {\n\n        if (tail == null) {\n            System.out.println(\"List is empty\");\n            return;\n        }\n\n        Node temp = tail;\n\n        while (temp != null) {\n            System.out.print(temp.data + \" -> \");\n            temp = temp.prev;\n        }\n\n        System.out.println(\"null\");\n    }\n}\n\npublic class Main {\n\n    public static void main(String[] args) {\n\n        DoublyLinkedList d = new DoublyLinkedList();\n\n        d.addFirst(100);\n        d.addFirst(10);\n        d.addFirst(1);\n\n        d.addLast(1000);\n        d.addLast(2000);\n\n        System.out.println(\"Forward:\");\n        d.display();\n\n        System.out.println(\"Reverse:\");\n        d.displayReverse();\n\n        System.out.println(\"\\nAfter deleteFirst():\");\n        d.deleteFirst();\n        d.display();\n\n        System.out.println(\"\\nAfter deleteLast():\");\n        d.deleteLast();\n        d.display();\n\n        System.out.println(\"\\nReverse Again:\");\n        d.displayReverse();\n    }\n}",
+    "createdAt": "2026-07-07T06:35:51.545Z",
+    "category": "linkedList"
+  },
+  {
+    "id": "1ne2skf",
+    "name": "New Snippet.java",
+    "description": "Quick Java logic piece",
+    "level": "Easy",
+    "code": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Hello, Java Snippet!\");\n    }\n}",
+    "createdAt": "2026-07-05T12:41:48.258Z"
+  },
+  {
     "id": "vwnmhqp",
     "name": "Transpose matrix.java",
     "description": "Transpose matrix",
