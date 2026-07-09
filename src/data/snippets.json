@@ -1,7 +1,7 @@
 [
   {
     "id": "s2lp92k",
-    "name": "logic.md",
+    "name": "toDecimal logic.md",
     "description": "Quick Java logic piece",
     "level": "Easy",
     "code": "# Trick to Remember\n\nConverting to decimal always follows the same pattern:\n\n```\n| Conversion            | Base Used |\n| --------------------- | --------: |\n| Binary → Decimal      |     **2** |\n| Octal → Decimal       |     **8** |\n| Hexadecimal → Decimal |    **16** |\n```\n\n# The code is almost identical. Only the base changes:\n```\n// Binary\ndecimal += digit * Math.pow(2, power);\n\n// Octal\ndecimal += digit * Math.pow(8, power);\n\n// Hexadecimal\ndecimal += value * Math.pow(16, power);\n```",

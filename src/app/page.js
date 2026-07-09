@@ -361,6 +361,7 @@ export default function Home() {
   // Modals state
   const [createModal, setCreateModal] = useState({ isOpen: false, type: "file" }); // type = file or folder
   const [renameModal, setRenameModal] = useState({ isOpen: false, item: null });
+  const [deleteConfirmModal, setDeleteConfirmModal] = useState({ isOpen: false, target: null, type: "resource" });
   const [newItemName, setNewItemName] = useState("");
   const [renameNewName, setRenameNewName] = useState("");
 
@@ -697,32 +698,51 @@ export default function Home() {
     }
   };
 
-  const handleDeleteResource = async (item) => {
-    if (!window.confirm(`Are you sure you want to delete "${item.name}"? This operation is permanent.`)) {
-      return;
-    }
+  const handleDeleteResource = (item) => {
+    setDeleteConfirmModal({
+      isOpen: true,
+      target: item,
+      type: "resource"
+    });
+  };
 
-    try {
-      const res = await fetch(`/api/fs?path=${encodeURIComponent(item.path)}`, {
-        method: "DELETE",
-      });
-      const data = await res.json();
+  const handleConfirmedDelete = async () => {
+    const { target, type } = deleteConfirmModal;
+    if (!target) return;
 
-      if (res.ok) {
-        showToast("success", "Resource Deleted", item.name);
-        if (selectedItem?.path === item.path) {
-          setSelectedItem(null);
+    if (type === "resource") {
+      try {
+        const res = await fetch(`/api/fs?path=${encodeURIComponent(target.path)}`, {
+          method: "DELETE",
+        });
+        const data = await res.json();
+
+        if (res.ok) {
+          showToast("success", "Resource Deleted", target.name);
+          if (selectedItem?.path === target.path) {
+            setSelectedItem(null);
+          }
+          if (editingFile?.path === target.path) {
+            setEditingFile(null);
+          }
+          loadDirectory(currentPath);
+        } else {
+          showToast("error", "Deletion Failed", data.error || "Insufficient access");
         }
-        if (editingFile?.path === item.path) {
-          setEditingFile(null);
-        }
-        loadDirectory(currentPath);
-      } else {
-        showToast("error", "Deletion Failed", data.error || "Insufficient access");
+      } catch (err) {
+        showToast("error", "Network Error", err.message);
       }
-    } catch (err) {
-      showToast("error", "Network Error", err.message);
+    } else if (type === "snippet") {
+      const newList = javaSnippets.filter(s => s.id !== target.id);
+      saveSnippetsToLocal(newList);
+      if (selectedSnippet?.id === target.id) {
+        setSelectedSnippet(null);
+        setIsEditingSnippet(false);
+      }
+      showToast("info", "Snippet Deleted", "Snippet removed from your collection.");
     }
+
+    setDeleteConfirmModal({ isOpen: false, target: null, type: "resource" });
   };
 
   const handleFileClick = async (item) => {
@@ -852,14 +872,14 @@ export default function Home() {
 
   const handleDeleteSnippet = (e, id) => {
     e.stopPropagation();
-    if (!window.confirm("Are you sure you want to delete this snippet?")) return;
-    const newList = javaSnippets.filter(s => s.id !== id);
-    saveSnippetsToLocal(newList);
-    if (selectedSnippet?.id === id) {
-      setSelectedSnippet(null);
-      setIsEditingSnippet(false);
+    const snippet = javaSnippets.find(s => s.id === id);
+    if (snippet) {
+      setDeleteConfirmModal({
+        isOpen: true,
+        target: snippet,
+        type: "snippet"
+      });
     }
-    showToast("info", "Snippet Deleted", "Snippet removed from your collection.");
   };
 
   const handleExportSnippet = async () => {
@@ -1548,6 +1568,33 @@ export default function Home() {
                               </div>
                             )}
                             
+                            {selectedSnippet.name.toLowerCase().endsWith(".md") && (
+                              <div className="editor-tabs" style={{ marginRight: "16px" }}>
+                                <button 
+                                  className={`editor-tab ${!isEditingSnippet ? "active" : ""}`}
+                                  onClick={() => {
+                                    setIsEditingSnippet(false);
+                                  }}
+                                >
+                                  Preview
+                                </button>
+                                <button 
+                                  className={`editor-tab ${isEditingSnippet ? "active" : ""}`}
+                                  onClick={() => {
+                                    setIsEditingSnippet(true);
+                                    setSnippetName(selectedSnippet.name);
+                                    setSnippetDescription(selectedSnippet.description || "");
+                                    setSnippetLevel(selectedSnippet.level || "Easy");
+                                    setSnippetCategory(selectedSnippet.category || "");
+                                    setSnippetCode(selectedSnippet.code);
+                                    setConsoleOutput(selectedSnippet.output || "");
+                                  }}
+                                >
+                                  Edit
+                                </button>
+                              </div>
+                            )}
+
                             <div className="snippet-viewer-actions">
                               {isEditingSnippet ? (
                                 <>
@@ -1575,9 +1622,19 @@ export default function Home() {
                                   <button className="btn-icon" title="Save to Active Workspace" onClick={handleExportSnippet}>
                                     <IconSave />
                                   </button>
-                                  <button className="btn-secondary" onClick={() => setIsEditingSnippet(true)}>
-                                    <IconEdit /> Edit
-                                  </button>
+                                  {!selectedSnippet.name.toLowerCase().endsWith(".md") && (
+                                    <button className="btn-secondary" onClick={() => {
+                                      setIsEditingSnippet(true);
+                                      setSnippetName(selectedSnippet.name);
+                                      setSnippetDescription(selectedSnippet.description || "");
+                                      setSnippetLevel(selectedSnippet.level || "Easy");
+                                      setSnippetCategory(selectedSnippet.category || "");
+                                      setSnippetCode(selectedSnippet.code);
+                                      setConsoleOutput(selectedSnippet.output || "");
+                                    }}>
+                                      <IconEdit /> Edit
+                                    </button>
+                                  )}
                                 </>
                               )}
                             </div>
@@ -1590,10 +1647,16 @@ export default function Home() {
                                 value={snippetCode}
                                 onChange={(e) => setSnippetCode(e.target.value)}
                                 spellCheck="false"
+                                placeholder="Start writing markdown content..."
                               />
                             ) : (
-                              <div className={`snippet-split-wrapper ${isConsoleCollapsed ? "console-hidden" : ""}`}>
-                                <div className="syntax-highlighter-wrapper">
+                              selectedSnippet.name.toLowerCase().endsWith(".md") ? (
+                                <div className="markdown-preview-container" style={{ padding: "20px", overflowY: "auto", height: "100%", width: "100%", backgroundColor: "var(--bg-editor)", color: "var(--text-primary)" }}>
+                                  <MarkdownRenderer content={snippetCode || selectedSnippet.code} syntaxTheme={getSyntaxTheme()} />
+                                </div>
+                              ) : (
+                                <div className={`snippet-split-wrapper ${isConsoleCollapsed ? "console-hidden" : ""}`}>
+                                  <div className="syntax-highlighter-wrapper">
                                   <SyntaxHighlighter 
                                     language="java" 
                                     style={getSyntaxTheme()}
@@ -1653,7 +1716,8 @@ export default function Home() {
                                     </div>
                                   )}
                                 </div>
-                              </div>
+                                </div>
+                              )
                             )}
                           </div>
                         </div>
@@ -2100,6 +2164,43 @@ export default function Home() {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+      {/* DELETE CONFIRMATION MODAL */}
+      {deleteConfirmModal.isOpen && (
+        <div className="modal-overlay" onClick={() => setDeleteConfirmModal({ isOpen: false, target: null, type: "resource" })}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{ maxWidth: "400px" }}>
+            <div className="modal-header">
+              <div className="modal-title" style={{ color: "hsl(350, 90%, 65%)" }}>Confirm Deletion</div>
+              <button 
+                className="btn-icon" 
+                style={{ border: "none", background: "transparent" }}
+                onClick={() => setDeleteConfirmModal({ isOpen: false, target: null, type: "resource" })}
+              >
+                ✕
+              </button>
+            </div>
+            <div className="modal-body" style={{ padding: "8px 0 20px" }}>
+              <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", lineHeight: "1.5" }}>
+                Are you sure you want to delete <strong>{deleteConfirmModal.target?.name}</strong>? This operation is permanent and cannot be undone.
+              </p>
+            </div>
+            <div className="modal-footer" style={{ display: "flex", justifyContent: "flex-end", gap: "10px" }}>
+              <button 
+                className="btn-secondary" 
+                onClick={() => setDeleteConfirmModal({ isOpen: false, target: null, type: "resource" })}
+              >
+                Cancel
+              </button>
+              <button 
+                className="btn-primary" 
+                style={{ backgroundColor: "hsl(350, 80%, 55%)", borderColor: "hsl(350, 80%, 50%)" }}
+                onClick={handleConfirmedDelete}
+              >
+                Delete
+              </button>
+            </div>
           </div>
         </div>
       )}
