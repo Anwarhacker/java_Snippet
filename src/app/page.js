@@ -116,6 +116,209 @@ const IconMenu = () => (
   </svg>
 );
 
+const IconMarkdown = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" width="16" height="16">
+    <path d="M14 3H2a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1zM2 2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"/>
+    <path d="M3.5 11V5H5l1.25 1.75L7.5 5h1.5v6H7.75V7.25L6.5 9l-1.25-1.75V11H3.5zm7.25-2V5H12v4h1l-1.75 2L9.5 9h1.25z"/>
+  </svg>
+);
+
+// Helper for inline markdown parsing
+function parseInline(text) {
+  if (!text) return "";
+  const parts = [];
+  let remaining = text;
+  let key = 0;
+  
+  while (remaining) {
+    const codeIdx = remaining.indexOf("`");
+    const boldIdx = remaining.indexOf("**");
+    const italicIdx = remaining.indexOf("*");
+    const linkMatch = remaining.match(/\[([^\]]+)\]\(([^)]+)\)/);
+    const linkIdx = linkMatch ? linkMatch.index : -1;
+
+    let matches = [];
+    if (codeIdx !== -1) matches.push({ type: "code", index: codeIdx });
+    if (boldIdx !== -1) matches.push({ type: "bold", index: boldIdx });
+    if (italicIdx !== -1 && italicIdx !== boldIdx) matches.push({ type: "italic", index: italicIdx });
+    if (linkIdx !== -1) matches.push({ type: "link", index: linkIdx, length: linkMatch[0].length, text: linkMatch[1], url: linkMatch[2] });
+
+    if (matches.length === 0) {
+      parts.push(<span key={key++}>{remaining}</span>);
+      break;
+    }
+
+    matches.sort((a, b) => a.index - b.index);
+    const first = matches[0];
+
+    if (first.index > 0) {
+      parts.push(<span key={key++}>{remaining.slice(0, first.index)}</span>);
+    }
+
+    if (first.type === "code") {
+      const nextCode = remaining.indexOf("`", first.index + 1);
+      if (nextCode !== -1) {
+        const codeText = remaining.slice(first.index + 1, nextCode);
+        parts.push(<code key={key++} className="inline-code" style={{ fontFamily: "var(--font-mono)", backgroundColor: "var(--bg-input)", padding: "2px 6px", borderRadius: "4px", fontSize: "0.85rem", border: "1px solid var(--border-color)", color: "var(--primary)" }}>{codeText}</code>);
+        remaining = remaining.slice(nextCode + 1);
+      } else {
+        parts.push(<span key={key++}>`</span>);
+        remaining = remaining.slice(first.index + 1);
+      }
+    } else if (first.type === "bold") {
+      const nextBold = remaining.indexOf("**", first.index + 2);
+      if (nextBold !== -1) {
+        const boldText = remaining.slice(first.index + 2, nextBold);
+        parts.push(<strong key={key++} style={{ fontWeight: "700", color: "var(--text-primary)" }}>{parseInline(boldText)}</strong>);
+        remaining = remaining.slice(nextBold + 2);
+      } else {
+        parts.push(<span key={key++}>**</span>);
+        remaining = remaining.slice(first.index + 2);
+      }
+    } else if (first.type === "italic") {
+      const nextItalic = remaining.indexOf("*", first.index + 1);
+      if (nextItalic !== -1) {
+        const italicText = remaining.slice(first.index + 1, nextItalic);
+        parts.push(<em key={key++} style={{ fontStyle: "italic" }}>{parseInline(italicText)}</em>);
+        remaining = remaining.slice(nextItalic + 1);
+      } else {
+        parts.push(<span key={key++}>*</span>);
+        remaining = remaining.slice(first.index + 1);
+      }
+    } else if (first.type === "link") {
+      parts.push(
+        <a 
+          key={key++} 
+          href={first.url} 
+          target="_blank" 
+          rel="noopener noreferrer"
+          style={{ color: "var(--primary)", textDecoration: "underline" }}
+        >
+          {first.text}
+        </a>
+      );
+      remaining = remaining.slice(first.index + first.length);
+    }
+  }
+
+  return parts;
+}
+
+// MarkdownRenderer component
+function MarkdownRenderer({ content, syntaxTheme }) {
+  if (!content) return null;
+  const parts = content.split(/(```[\s\S]*?```)/g);
+
+  return (
+    <div className="markdown-preview-content">
+      {parts.map((part, index) => {
+        if (part.startsWith("```")) {
+          const match = part.match(/```(\w*)\n([\s\S]*?)```/);
+          const lang = match ? match[1] : "";
+          const code = match ? match[2].trim() : part.slice(3, -3).trim();
+          return (
+            <div key={index} className="md-code-block-wrapper" style={{ margin: "14px 0" }}>
+              {lang && <div className="md-code-lang" style={{ fontSize: "0.75rem", padding: "4px 8px", backgroundColor: "var(--bg-input)", borderTopLeftRadius: "6px", borderTopRightRadius: "6px", color: "var(--text-muted)", width: "fit-content", borderBottom: "1px solid var(--border-color)" }}>{lang.toUpperCase()}</div>}
+              <SyntaxHighlighter
+                language={lang || "text"}
+                style={syntaxTheme}
+                customStyle={{
+                  margin: 0,
+                  padding: '16px',
+                  backgroundColor: 'var(--bg-editor)',
+                  fontSize: '0.85rem',
+                  borderRadius: lang ? '0 0 8px 8px' : '8px',
+                  border: '1px solid var(--border-color)',
+                  color: 'var(--text-primary)'
+                }}
+              >
+                {code}
+              </SyntaxHighlighter>
+            </div>
+          );
+        } else {
+          const lines = part.split("\n");
+          let listStarted = false;
+          let listElements = [];
+          const outputElements = [];
+
+          const finalizeList = (key) => {
+            if (listElements.length > 0) {
+              outputElements.push(
+                <ul key={`ul-${key}`} className="md-ul" style={{ paddingLeft: "20px", margin: "8px 0" }}>
+                  {listElements}
+                </ul>
+              );
+              listElements = [];
+              listStarted = false;
+            }
+          };
+
+          lines.forEach((line, lineIdx) => {
+            const headerMatch = line.match(/^(#{1,6})\s+(.*)$/);
+            if (headerMatch) {
+              finalizeList(lineIdx);
+              const level = headerMatch[1].length;
+              const text = headerMatch[2];
+              const Tag = `h${level}`;
+              outputElements.push(<Tag key={lineIdx}>{parseInline(text)}</Tag>);
+              return;
+            }
+
+            if (line.startsWith(">")) {
+              finalizeList(lineIdx);
+              const text = line.substring(1).trim();
+              outputElements.push(
+                <blockquote key={lineIdx} style={{ borderLeft: "4px solid var(--primary)", paddingLeft: "16px", color: "var(--text-secondary)", margin: "16px 0", fontStyle: "italic" }}>
+                  {parseInline(text)}
+                </blockquote>
+              );
+              return;
+            }
+
+            if (line.trim() === "---") {
+              finalizeList(lineIdx);
+              outputElements.push(<hr key={lineIdx} style={{ border: "0", borderTop: "1px solid var(--border-color)", margin: "1.5rem 0" }} />);
+              return;
+            }
+
+            const listMatch = line.match(/^(\s*)[-*+]\s+(.*)$/);
+            if (listMatch) {
+              listStarted = true;
+              const text = listMatch[2];
+              listElements.push(<li key={`li-${lineIdx}`} style={{ margin: "4px 0", color: "var(--text-secondary)" }}>{parseInline(text)}</li>);
+              return;
+            }
+
+            const numListMatch = line.match(/^(\s*)\d+\.\s+(.*)$/);
+            if (numListMatch) {
+              listStarted = true;
+              const text = numListMatch[2];
+              listElements.push(<li key={`li-${lineIdx}`} style={{ margin: "4px 0", color: "var(--text-secondary)", listStyleType: "decimal" }}>{parseInline(text)}</li>);
+              return;
+            }
+
+            if (line.trim() === "") {
+              finalizeList(lineIdx);
+              outputElements.push(<div key={`br-${lineIdx}`} style={{ height: "0.5rem" }} />);
+            } else {
+              finalizeList(lineIdx);
+              outputElements.push(
+                <p key={lineIdx} style={{ margin: "8px 0", lineHeight: "1.6", color: "var(--text-secondary)", fontSize: "0.95rem" }}>
+                  {parseInline(line)}
+                </p>
+              );
+            }
+          });
+
+          finalizeList("end");
+          return <div key={index}>{outputElements}</div>;
+        }
+      })}
+    </div>
+  );
+}
+
 
 export default function Home() {
   const [currentPath, setCurrentPath] = useState("");
@@ -172,6 +375,10 @@ export default function Home() {
   const [snippetCode, setSnippetCode] = useState("");
   const [snippetCategory, setSnippetCategory] = useState(""); // Category/Pattern (e.g. Sliding Window)
 
+  // Console Execution State
+  const [consoleOutput, setConsoleOutput] = useState("");
+  const [isConsoleCollapsed, setIsConsoleCollapsed] = useState(false);
+
   // Computed: Group Java Snippets by Category for Sidebar
   const snippetCategories = useMemo(() => {
     const counts = {};
@@ -192,12 +399,14 @@ export default function Home() {
   const [collapsedSections, setCollapsedSections] = useState({
     bookmarks: false,
     workspace: false,
-    labs: false
+    labs: false,
+    markdown: false
   });
 
   // Editor state
   const [editingFile, setEditingFile] = useState(null); // { path: '...', name: '...', content: '...' }
   const [editorContent, setEditorContent] = useState("");
+  const [editorMode, setEditorMode] = useState("preview"); // preview or edit
   const [isSavingFile, setIsSavingFile] = useState(false);
 
   // Toasts state
@@ -540,6 +749,11 @@ export default function Home() {
       if (res.ok) {
         setEditingFile(item);
         setEditorContent(data.content);
+        if (item.name.toLowerCase().endsWith(".md")) {
+          setEditorMode("preview");
+        } else {
+          setEditorMode("edit");
+        }
         showToast("success", "Loaded File", item.name);
       } else {
         showToast("error", "Cannot Open File", data.error || "This file may be binary or locked.");
@@ -620,17 +834,18 @@ export default function Home() {
     setSnippetDescription(newSnippet.description);
     setSnippetLevel(newSnippet.level);
     setSnippetCategory("");
-    setSnippetCode(newSnippet.code);
+    setSnippetCode("");
+    setConsoleOutput("");
     showToast("success", "Snippet Created", "New Java snippet added.");
   };
 
   const handleSaveSnippet = () => {
     if (!selectedSnippet) return;
     const updatedSnippets = javaSnippets.map(s => 
-      s.id === selectedSnippet.id ? { ...s, name: snippetName, description: snippetDescription, level: snippetLevel, category: snippetCategory, code: snippetCode } : s
+      s.id === selectedSnippet.id ? { ...s, name: snippetName, description: snippetDescription, level: snippetLevel, category: snippetCategory, code: snippetCode, output: consoleOutput } : s
     );
     saveSnippetsToLocal(updatedSnippets);
-    setSelectedSnippet({ ...selectedSnippet, name: snippetName, description: snippetDescription, level: snippetLevel, category: snippetCategory, code: snippetCode });
+    setSelectedSnippet({ ...selectedSnippet, name: snippetName, description: snippetDescription, level: snippetLevel, category: snippetCategory, code: snippetCode, output: consoleOutput });
     setIsEditingSnippet(false);
     showToast("success", "Snippet Saved", snippetName);
   };
@@ -674,6 +889,17 @@ export default function Home() {
     } catch (err) {
       showToast("error", "Export Error", err.message);
     }
+  };
+
+  const handleSaveSnippetOutput = async () => {
+    if (!selectedSnippet) return;
+    const updatedSnippet = { ...selectedSnippet, output: consoleOutput };
+    const updatedSnippets = javaSnippets.map(s => 
+      s.id === selectedSnippet.id ? updatedSnippet : s
+    );
+    await saveSnippetsToLocal(updatedSnippets);
+    setSelectedSnippet(updatedSnippet);
+    showToast("success", "Output Saved", "Execution output persisted for this snippet.");
   };
 
   const toggleSection = (section) => {
@@ -943,6 +1169,48 @@ export default function Home() {
           <div>
             <div 
               className="section-title-wrapper" 
+              onClick={() => toggleSection("markdown")}
+            >
+              <div className="section-title">Markdown Files</div>
+              <span className={`collapse-icon ${collapsedSections.markdown ? "collapsed" : ""}`}>
+                <IconChevronDown />
+              </span>
+            </div>
+            
+            <div className={`collapsible-section ${collapsedSections.markdown ? "collapsed" : ""}`}>
+              <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                {items.filter(item => !item.isDir && item.name.toLowerCase().endsWith(".md")).length === 0 ? (
+                  <div style={{ padding: "8px 10px", fontSize: "0.8rem", color: "var(--text-muted)", fontStyle: "italic" }}>
+                    No markdown files in folder
+                  </div>
+                ) : (
+                  items
+                    .filter(item => !item.isDir && item.name.toLowerCase().endsWith(".md"))
+                    .map((item, idx) => (
+                      <div 
+                        key={idx}
+                        className={`tree-node ${editingFile?.path === item.path ? "active" : ""}`}
+                        onClick={() => openFileInEditor(item)}
+                      >
+                        <span style={{ opacity: 0.7, display: "flex", alignItems: "center", color: "var(--primary)" }}><IconMarkdown /></span>
+                        <span style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                          {item.name}
+                        </span>
+                        {item.mdIndex !== undefined && (
+                          <span className="badge" style={{ marginLeft: "auto", fontSize: "0.7rem", backgroundColor: "rgba(110, 68, 255, 0.15)", color: "var(--primary)", padding: "1px 6px", borderRadius: "10px" }}>
+                            #{item.mdIndex}
+                          </span>
+                        )}
+                      </div>
+                    ))
+                )}
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div 
+              className="section-title-wrapper" 
               onClick={() => toggleSection("labs")}
             >
               <div className="section-title">Labs & Tools</div>
@@ -1183,6 +1451,7 @@ export default function Home() {
                                 setSnippetLevel(snippet.level || "Easy");
                                 setSnippetCategory(snippet.category || "");
                                 setSnippetCode(snippet.code);
+                                setConsoleOutput(snippet.output || "");
                               }}
                             >
                               <div className="snippet-item-icon" style={{ position: "relative" }}>
@@ -1323,21 +1592,67 @@ export default function Home() {
                                 spellCheck="false"
                               />
                             ) : (
-                              <div className="syntax-highlighter-wrapper">
-                                <SyntaxHighlighter 
-                                  language="java" 
-                                  style={getSyntaxTheme()}
-                                  customStyle={{
-                                    margin: 0,
-                                    padding: '20px',
-                                    backgroundColor: 'transparent',
-                                    fontSize: '0.9rem',
-                                    borderRadius: '8px'
-                                  }}
-                                  showLineNumbers
-                                >
-                                  {selectedSnippet.code}
-                                </SyntaxHighlighter>
+                              <div className={`snippet-split-wrapper ${isConsoleCollapsed ? "console-hidden" : ""}`}>
+                                <div className="syntax-highlighter-wrapper">
+                                  <SyntaxHighlighter 
+                                    language="java" 
+                                    style={getSyntaxTheme()}
+                                    customStyle={{
+                                      margin: 0,
+                                      padding: '20px',
+                                      backgroundColor: 'transparent',
+                                      fontSize: '0.9rem',
+                                      borderRadius: '8px'
+                                    }}
+                                    showLineNumbers
+                                  >
+                                    {selectedSnippet.code}
+                                  </SyntaxHighlighter>
+                                </div>
+                                <div className={`console-wrapper ${isConsoleCollapsed ? "collapsed" : ""}`}>
+                                  <div 
+                                    className="console-header"
+                                    style={{ cursor: "pointer" }}
+                                    onClick={() => setIsConsoleCollapsed(!isConsoleCollapsed)}
+                                  >
+                                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                                      <span style={{ 
+                                        display: "inline-flex", 
+                                        transform: isConsoleCollapsed ? "rotate(-90deg)" : "rotate(0deg)",
+                                        transition: "transform var(--transition-normal)",
+                                        color: "var(--text-muted)"
+                                      }}>
+                                        <IconChevronDown />
+                                      </span>
+                                      <span className="console-title">Java Code Output</span>
+                                    </div>
+                                    {!isConsoleCollapsed ? (
+                                      <div className="console-actions" onClick={(e) => e.stopPropagation()}>
+                                        <button 
+                                          className="btn-primary-console"
+                                          onClick={handleSaveSnippetOutput}
+                                        >
+                                          Save Output
+                                        </button>
+                                      </div>
+                                    ) : (
+                                      <span style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>
+                                        Click to Expand
+                                      </span>
+                                    )}
+                                  </div>
+                                  {!isConsoleCollapsed && (
+                                    <div className="console-body-wrapper">
+                                      <textarea 
+                                        value={consoleOutput}
+                                        onChange={(e) => setConsoleOutput(e.target.value)}
+                                        placeholder="Type or paste the Java program output here..."
+                                        className="console-full-textarea"
+                                        spellCheck="false"
+                                      />
+                                    </div>
+                                  )}
+                                </div>
                               </div>
                             )}
                           </div>
@@ -1617,6 +1932,22 @@ export default function Home() {
                   <div className="editor-file-name">{editingFile.name}</div>
                   <div className="editor-file-path" title={editingFile.path}>{editingFile.path}</div>
                 </div>
+                {editingFile.name.toLowerCase().endsWith(".md") && (
+                  <div className="editor-tabs" style={{ marginRight: "12px" }}>
+                    <button 
+                      className={`editor-tab ${editorMode === "preview" ? "active" : ""}`}
+                      onClick={() => setEditorMode("preview")}
+                    >
+                      Preview
+                    </button>
+                    <button 
+                      className={`editor-tab ${editorMode === "edit" ? "active" : ""}`}
+                      onClick={() => setEditorMode("edit")}
+                    >
+                      Edit
+                    </button>
+                  </div>
+                )}
                 <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                   <button 
                     className="btn-icon" 
@@ -1637,13 +1968,19 @@ export default function Home() {
               </div>
 
               <div className="editor-textarea-wrapper">
-                <textarea 
-                  className="editor-textarea" 
-                  value={editorContent}
-                  onChange={(e) => setEditorContent(e.target.value)}
-                  spellCheck="false"
-                  placeholder="Start writing text/code content..."
-                />
+                {editingFile.name.toLowerCase().endsWith(".md") && editorMode === "preview" ? (
+                  <div className="markdown-preview-container">
+                    <MarkdownRenderer content={editorContent} syntaxTheme={getSyntaxTheme()} />
+                  </div>
+                ) : (
+                  <textarea 
+                    className="editor-textarea" 
+                    value={editorContent}
+                    onChange={(e) => setEditorContent(e.target.value)}
+                    spellCheck="false"
+                    placeholder="Start writing text/code content..."
+                  />
+                )}
               </div>
 
               <div className="editor-footer">

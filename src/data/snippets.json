@@ -1,12 +1,143 @@
 [
   {
+    "id": "s2lp92k",
+    "name": "logic.md",
+    "description": "Quick Java logic piece",
+    "level": "Easy",
+    "code": "# Trick to Remember\n\nConverting to decimal always follows the same pattern:\n\n```\n| Conversion            | Base Used |\n| --------------------- | --------: |\n| Binary → Decimal      |     **2** |\n| Octal → Decimal       |     **8** |\n| Hexadecimal → Decimal |    **16** |\n```\n\n# The code is almost identical. Only the base changes:\n```\n// Binary\ndecimal += digit * Math.pow(2, power);\n\n// Octal\ndecimal += digit * Math.pow(8, power);\n\n// Hexadecimal\ndecimal += value * Math.pow(16, power);\n```",
+    "createdAt": "2026-07-09T06:18:01.606Z",
+    "category": "Conversion",
+    "output": ""
+  },
+  {
+    "id": "f5vtcmo",
+    "name": "DecimalToBinary ",
+    "description": "DecimalToBinary ",
+    "level": "Medium",
+    "code": "import java.util.Scanner;\n\npublic class DecimalToBinary {\n\n    static void convertToBinary(int num) {\n\n        if (num == 0) {\n            System.out.println(0);\n            return;\n        }\n\n        StringBuilder ans = new StringBuilder();\n\n        while (num > 0) {\n            ans.append(num % 2);\n            num /= 2;\n        }\n\n        System.out.println(ans.reverse());\n    }\n\n    public static void main(String[] args) {\n\n        Scanner sc = new Scanner(System.in);\n\n        int n = sc.nextInt();\n\n        convertToBinary(n);\n\n        sc.close();\n    }\n}",
+    "createdAt": "2026-07-09T06:12:56.503Z",
+    "category": "Conversion",
+    "output": "13₁₀ = 1101₂"
+  },
+  {
+    "id": "smsajpn",
+    "name": "HexaDecimal To decimal",
+    "description": "HexaDecimal To decimal",
+    "level": "Medium",
+    "code": "public class Main {\n    public static void main(String[] args) {\n\n        String hex = \"2F\";\n        int decimal = 0;\n        int power = 0;\n\n        for (int i = hex.length() - 1; i >= 0; i--) {\n\n            char ch = hex.charAt(i);\n            int value;\n\n            if (ch >= '0' && ch <= '9') {\n                value = ch - '0';\n            } else {\n                value = ch - 'A' + 10;\n            }\n\n            decimal += value * Math.pow(16, power);\n            power++;\n        }\n\n        System.out.println(decimal);\n    }\n}",
+    "createdAt": "2026-07-09T05:54:38.393Z",
+    "category": "Conversion",
+    "output": "2. ch - 'A' + 10 (Convert hexadecimal letters)\n\nASCII values:\n\nCharacter\tASCII\n'A'\t          65\n'B'\t          66\n'C'\t          67\n'D'\t          68\n'E'\t          69\n'F'\t          70\n\nExample:\n\nchar ch = 'F';\n\nint value = ch - 'A' + 10;\n\nCalculation:\n\n'F' = 70\n'A' = 65\n\n70 - 65 = 5\n\n5 + 10 = 15"
+  },
+  {
+    "id": "nwdi0nv",
+    "name": "prefixSum",
+    "description": "https://app.kodnest.com/my-learning/class/eb011eb8-54e5-423c-b731-00623b3ee9c8/module/da5f05d0-079d-4fb0-a20f-c7c83e907a57/topic/273c2dc2-03aa-483e-995d-dc975f861aaf/sub-topic/35a5cace-58bd-4f9a-a8a0-f4feac488f5a/layout/3/content",
+    "level": "Medium",
+    "code": "import java.util.*;\n\npublic class Main {\n    public static ArrayList<Long> rangeSumQueries(int n, int[] arr, int[][] queries) {\n        long prefix[] = new long[n];\n\n        prefix[0] = arr[0];\n\n        for(int i = 1 ; i < n ; i++) {\n            prefix[i] = prefix[i-1] +arr[i];\n        }\n\n        ArrayList<Long> result = new ArrayList<>();\n\n        for(int i = 0 ; i < queries.length ; i ++) {\n             int L = queries[i][0];\n             int R = queries[i][1];\n\n             if(L == 0) {\n                result.add(prefix[R]);\n             } else{\n                result.add(prefix[R] - prefix[L-1]);\n             }\n        }\n\n        return result;\n     }\n    \n    \n\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n\n        int n = sc.nextInt();\n        int[] arr = new int[n];\n\n        for (int i = 0; i < n; i++) {\n            arr[i] = sc.nextInt();\n        }\n\n        int q = sc.nextInt();\n        int[][] queries = new int[q][2];\n\n        for (int i = 0; i < q; i++) {\n            queries[i][0] = sc.nextInt();\n            queries[i][1] = sc.nextInt();\n        }\n\n        ArrayList<Long> result = rangeSumQueries(n, arr, queries);\n\n        for (long value : result) {\n            System.out.println(value);\n        }\n    }\n}\n",
+    "createdAt": "2026-07-08T21:10:04.977Z",
+    "category": "prefixSum",
+    "output": ""
+  },
+  {
+    "id": "qasnzbz",
+    "name": "Collections sorting of values",
+    "description": "https://app.kodnest.com/my-learning/class/eb011eb8-54e5-423c-b731-00623b3ee9c8/module/7f87e619-bc5d-465d-8161-e95d2f1a8419/topic/28d2e553-ec2d-410b-8a88-b91c388d6597/sub-topic/37622f70-20ac-4be7-a2fa-fb78ff54cf32/layout/3/content",
+    "level": "Medium",
+    "code": "import java.util.*;\n\npublic class Main {\n    public static ArrayList<Integer> topKFrequent(int n, int[] arr, int k) {\n         HashMap<Integer , Integer>  map = new HashMap<>();\n\n         for(int ele : arr) {\n            map.put(ele, map.getOrDefault(ele , 0) +1);\n         }\n\n         ArrayList<Integer> values = new ArrayList<>(map.keySet());\n\n         Collections.sort(values , (a, b) -> {\n            if(!map.get(a).equals(map.get(b))) {\n                return map.get(b) - map.get(a);\n            } else {\n                return a - b;\n            }\n         });\n      ArrayList<Integer> result = new ArrayList<>();\n\n      for(int i = 0 ; i < k ; i++) {\n        result.add(values.get(i));\n      }\n\n      return result;\n    }\n\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n\n        int n = sc.nextInt();\n        int[] arr = new int[n];\n\n        for (int i = 0; i < n; i++) {\n            arr[i] = sc.nextInt();\n        }\n\n        int k = sc.nextInt();\n\n        ArrayList<Integer> result = topKFrequent(n, arr, k);\n\n        for (int value : result) {\n            System.out.print(value + \" \");\n        }\n    }\n}\n",
+    "createdAt": "2026-07-08T20:10:50.702Z",
+    "category": "Sorting",
+    "output": ""
+  },
+  {
+    "id": "rf3lak2",
+    "name": "Find First Mapping Conflict",
+    "description": "https://app.kodnest.com/my-learning/class/eb011eb8-54e5-423c-b731-00623b3ee9c8/module/7f87e619-bc5d-465d-8161-e95d2f1a8419/topic/e35cb63e-7730-44cb-a9af-359262563868/sub-topic/562153a9-c9c3-45e3-ad78-3eb46bbca57d/layout/3/content",
+    "level": "Medium",
+    "code": "import java.util.*;\n\npublic class Main {\n    public static int firstMappingConflict(String s1, String s2) {\n        if(s1.length() != s2.length()) {\n            return -1;\n        }\n\n        HashMap<Character , Character>  map = new HashMap<>();\n\n        for(int i = 0 ; i < s1.length() ; i++) {\n\n            char ch1 = s1.charAt(i);\n            char ch2 = s2.charAt(i);\n\n            if(map.containsKey(ch1)) {\n                if(map.get(ch1) != ch2) {\n                    return i+1;\n                }\n            } else {\n                map.put(ch1 , ch2);\n            }\n        }\n        return -1;\n    }\n\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n\n        String s1 = sc.next();\n        String s2 = sc.next();\n\n        int result = firstMappingConflict(s1, s2);\n        System.out.println(result);\n    }\n}\n",
+    "createdAt": "2026-07-08T19:46:20.204Z",
+    "category": "one-To-one mapping",
+    "output": ""
+  },
+  {
+    "id": "jp69j22",
+    "name": "Check Character Transformation",
+    "description": "https://app.kodnest.com/my-learning/class/eb011eb8-54e5-423c-b731-00623b3ee9c8/module/7f87e619-bc5d-465d-8161-e95d2f1a8419/topic/e35cb63e-7730-44cb-a9af-359262563868/sub-topic/e87acd4b-4a08-4306-a904-82cab2aa75ee/layout/3/content",
+    "level": "Medium",
+    "code": "import java.util.*;\n\npublic class Main {\n    public static String checkCharacterTransformation(String original, String hidden) {\n        HashMap<Character , Character>  map = new HashMap<>();\n\n        if(original.length() != hidden.length()) {\n            return \"NO\";\n        }\n\n        for(int i = 0 ; i < original.length(); i ++) {\n            char ch1 = original.charAt(i);\n            char ch2 = hidden.charAt(i);\n\n            if(map.containsKey(ch1)) {\n                if(map.get(ch1) != ch2) {\n                    return \"NO\";\n                }\n            } else {\n\n                map.put(ch1 , ch2);\n            }\n        }\n        return \"YES\";\n    }\n\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n\n        String original = sc.next();\n        String hidden = sc.next();\n\n        String result = checkCharacterTransformation(original, hidden);\n        System.out.println(result);\n    }\n}\n",
+    "createdAt": "2026-07-08T19:30:43.549Z",
+    "category": "one-To-one mapping",
+    "output": ""
+  },
+  {
+    "id": "ri62eo9",
+    "name": "Check Word Pattern",
+    "description": "https://app.kodnest.com/my-learning/class/eb011eb8-54e5-423c-b731-00623b3ee9c8/module/7f87e619-bc5d-465d-8161-e95d2f1a8419/topic/e35cb63e-7730-44cb-a9af-359262563868/sub-topic/bc846884-bc2c-4b95-bf87-b7446101b671/layout/3/content",
+    "level": "Medium",
+    "code": "import java.util.*;\n\npublic class Main {\n    public static String checkWordPattern(String pattern, String sentence) {\n      \n      HashMap<Character , String> map1 = new HashMap<>();\n    //   HashMap<String , Character> map2 = new hashMap<>();\n\n\n      String stn[] = sentence.split(\" \");\n      if(pattern.length()  != stn.length) {\n        return \"NO\";\n      }\n\n      for(int i = 0 ; i < pattern.length() ; i++) {\n           \n           char ch = pattern.charAt(i);\n           String value = stn[i];\n\n          \n        if(map1.containsKey(ch)) {\n\n            if(!map1.get(ch).equals(value)) {\n                return \"NO\";\n            }\n        } else {\n            if(map1.containsValue(value)) {\n                return \"NO\";\n            }\n\n            map1.put(ch , value);\n        }\n\n      }\n        return \"YES\";\n    }\n\n    public static void main(String[] args) {\n        Scanner sc = new Scanner(System.in);\n\n        String pattern = sc.nextLine();\n        String sentence = sc.nextLine();\n\n        String result = checkWordPattern(pattern, sentence);\n        System.out.println(result);\n    }\n}\n",
+    "createdAt": "2026-07-08T19:20:49.155Z",
+    "category": "one-To-one mapping",
+    "output": ""
+  },
+  {
+    "id": "t8gs0pe",
+    "name": "Fibonacci",
+    "description": "fibonacci",
+    "level": "Medium",
+    "code": "class Main {\n\n    static int fibonacci(int n) {\n\n        // Base cases\n        if (n == 0)\n            return 0;\n\n        if (n == 1)\n            return 1;\n\n        // Recursive call\n        return fibonacci(n - 1) + fibonacci(n - 2);\n    }\n\n    public static void main(String[] args) {\n\n        int n = 6;\n\n        System.out.println(fibonacci(n));\n    }\n}",
+    "createdAt": "2026-07-08T11:42:49.550Z",
+    "category": "recursion",
+    "output": "8"
+  },
+  {
+    "id": "lnakrts",
+    "name": "dailyTemperatures",
+    "description": "https://claude.ai/chat/cacf11b8-294e-4dd2-a2cf-5ee44cd4be46",
+    "level": "Easy",
+    "code": "import java.util.Stack;\n\npublic class Main {\n\n    static int[] dailyTemperatures(int[] temp) {\n\n        int n = temp.length;\n\n        int[] ans = new int[n];\n\n        Stack<Integer> stack = new Stack<>();\n\n        for (int i = 0; i < n; i++) {\n\n            while (!stack.isEmpty()\n                    && temp[i] > temp[stack.peek()]) {\n\n                int index = stack.pop();\n\n                ans[index] = i - index;\n            }\n\n            stack.push(i); // pushing indices\n        }\n\n        return ans;\n    }\n\n    public static void main(String[] args) {\n\n        int[] temp = {73,74,75,71,69,72,76,73};\n\n        int[] ans = dailyTemperatures(temp);\n\n        for (int x : ans)\n            System.out.print(x + \" \");\n    }\n}",
+    "createdAt": "2026-07-08T04:54:32.797Z",
+    "category": "Stack",
+    "output": "1 1 4 2 1 1 0 0"
+  },
+  {
+    "id": "cls3v1f",
+    "name": "Node merge.java",
+    "description": "Node merge",
+    "level": "Medium",
+    "code": "class Node {\n    int data;\n    Node next;\n\n    Node(int data) {\n        this.data = data;\n        this.next = null;\n    }\n}\n\npublic class Main {\n\n    static Node merge(Node head1, Node head2) {\n\n        Node dummy = new Node(-1);\n        Node tail = dummy;\n\n        while (head1 != null && head2 != null) {\n\n            if (head1.data <= head2.data) {\n                tail.next = head1;\n                head1 = head1.next;\n            } else {\n                tail.next = head2;\n                head2 = head2.next;\n            }\n\n            tail = tail.next;\n        }\n\n        if (head1 != null)\n            tail.next = head1;\n\n        if (head2 != null)\n            tail.next = head2;\n\n        return dummy.next;\n    }\n\n    static void display(Node head) {\n\n        Node temp = head;\n\n        while (temp != null) {\n            System.out.print(temp.data + \" -> \");\n            temp = temp.next;\n        }\n\n        System.out.println(\"null\");\n    }\n\n    public static void main(String[] args) {\n\n        Node head1 = new Node(1);\n        head1.next = new Node(3);\n        head1.next.next = new Node(5);\n\n        Node head2 = new Node(2);\n        head2.next = new Node(4);\n        head2.next.next = new Node(6);\n\n        Node result = merge(head1, head2);\n\n        display(result);\n    }\n}",
+    "createdAt": "2026-07-07T18:52:14.841Z",
+    "category": "linkedList",
+    "output": "1 -> 2 -> 3 -> 4 -> 5 -> 6 -> null"
+  },
+  {
+    "id": "focj76f",
+    "name": "SinglyLinkedList ",
+    "description": "SinglyLinkedList  with tail",
+    "level": "Medium",
+    "code": "class Node {\n    int data;\n    Node next;\n\n    Node(int data) {\n        this.data = data;\n        this.next = null;\n    }\n}\n\nclass SinglyLinkedList {\n\n    Node head;\n    Node tail;\n\n    // Insert at beginning\n    void addFirst(int data) {\n\n        Node newNode = new Node(data);\n\n        if (head == null) {\n            head = tail = newNode;\n            return;\n        }\n\n        newNode.next = head;\n        head = newNode;\n    }\n\n    // Insert at end\n    void addLast(int data) {\n\n        Node newNode = new Node(data);\n\n        if (head == null) {\n            head = tail = newNode;\n            return;\n        }\n\n        tail.next = newNode;\n        tail = newNode;\n    }\n\n    // Delete first node\n    void deleteFirst() {\n\n        if (head == null) {\n            System.out.println(\"The list is already empty\");\n            return;\n        }\n\n        if (head == tail) {\n            head = tail = null;\n            return;\n        }\n\n        head = head.next;\n    }\n\n    // Delete last node\n    void deleteLast() {\n\n        if (head == null) {\n            System.out.println(\"The list is already empty\");\n            return;\n        }\n\n        if (head == tail) {\n            head = tail = null;\n            return;\n        }\n\n        Node temp = head;\n\n        while (temp.next.next != null) {\n            temp = temp.next;\n        }\n\n        tail = temp;\n        tail.next = null;\n    }\n\n    // Display the list\n    void display() {\n\n        if (head == null) {\n            System.out.println(\"The list is empty\");\n            return;\n        }\n\n        Node temp = head;\n\n        while (temp != null) {\n            System.out.print(temp.data + \" -> \");\n            temp = temp.next;\n        }\n\n        System.out.println(\"null\");\n    }\n}\n\npublic class Main {\n\n    public static void main(String[] args) {\n\n        SinglyLinkedList sl = new SinglyLinkedList();\n\n        System.out.println(\"After addFirst():\");\n        sl.addFirst(20);\n        sl.addFirst(10);\n        sl.addFirst(5);\n        sl.display();\n\n        System.out.println();\n\n        System.out.println(\"After addLast():\");\n        sl.addLast(30);\n        sl.addLast(40);\n        sl.display();\n\n        System.out.println();\n\n        System.out.println(\"After deleteFirst():\");\n        sl.deleteFirst();\n        sl.display();\n\n        System.out.println();\n\n        System.out.println(\"After deleteLast():\");\n        sl.deleteLast();\n        sl.display();\n\n        System.out.println();\n\n        System.out.println(\"Delete all elements:\");\n        sl.deleteFirst();\n        sl.deleteFirst();\n        sl.deleteFirst();\n        sl.display();\n\n        System.out.println();\n\n        System.out.println(\"Trying to delete from an empty list:\");\n        sl.deleteFirst();\n        sl.deleteLast();\n    }\n}",
+    "createdAt": "2026-07-07T17:16:06.150Z",
+    "category": "linkedList",
+    "output": "After addFirst():\n5 -> 10 -> 20 -> null\n\nAfter addLast():\n5 -> 10 -> 20 -> 30 -> 40 -> null\n\nAfter deleteFirst():\n10 -> 20 -> 30 -> 40 -> null\n\nAfter deleteLast():\n10 -> 20 -> 30 -> null\n\nDelete all elements:\nThe list is empty\n\nTrying to delete from an empty list:\nThe list is already empty\nThe list is already empty"
+  },
+  {
+    "id": "5a32fpg",
+    "name": "deleteByValue",
+    "description": "Delete by value ",
+    "level": "Easy",
+    "code": "void deleteByValue() {\n    \t\n    \tif(head.data == 30) {\n    \t\thead = head.next;;\n    \t\treturn;\n    \t}\n    \t\n    \tNode temp = head;\n    \twhile(temp.next.data != 30) {\n    \t\ttemp = temp.next;\n    \t}\n    \ttemp.next = temp.next.next;\n    }",
+    "createdAt": "2026-07-07T10:22:21.728Z",
+    "category": "linkedList",
+    "output": ""
+  },
+  {
     "id": "07iu5ph",
     "name": "DoublyLinkedList.java",
     "description": "DoublyLinkedList",
     "level": "Medium",
-    "code": "class Node {\n    int data;\n    Node next;\n    Node prev;\n\n    Node(int data) {\n        this.data = data;\n        this.next = null;\n        this.prev = null;\n    }\n}\n\nclass DoublyLinkedList {\n\n    Node head;\n    Node tail;\n\n    // Insert at beginning\n    void addFirst(int data) {\n\n        Node newNode = new Node(data);\n\n        if (head == null) {\n            head = tail = newNode;\n            return;\n        }\n\n        newNode.next = head;\n        head.prev = newNode;\n        head = newNode;\n    }\n\n    // Insert at end\n    void addLast(int data) {\n\n        Node newNode = new Node(data);\n\n        if (head == null) {\n            head = tail = newNode;\n            return;\n        }\n\n        tail.next = newNode;\n        newNode.prev = tail;\n        tail = newNode;\n    }\n\n    // Delete first node\n    void deleteFirst() {\n\n        if (head == null) {\n            System.out.println(\"List is empty\");\n            return;\n        }\n\n        // Only one node\n        if (head == tail) {\n            head = tail = null;\n            return;\n        }\n\n        head = head.next;\n        head.prev = null;\n    }\n\n    // Delete last node\n    void deleteLast() {\n\n        if (head == null) {\n            System.out.println(\"List is empty\");\n            return;\n        }\n\n        // Only one node\n        if (head == tail) {\n            head = tail = null;\n            return;\n        }\n\n        tail = tail.prev;\n        tail.next = null;\n    }\n\n    // Display from head to tail\n    void display() {\n\n        if (head == null) {\n            System.out.println(\"List is empty\");\n            return;\n        }\n\n        Node temp = head;\n\n        while (temp != null) {\n            System.out.print(temp.data + \" -> \");\n            temp = temp.next;\n        }\n\n        System.out.println(\"null\");\n    }\n\n    // Display from tail to head\n    void displayReverse() {\n\n        if (tail == null) {\n            System.out.println(\"List is empty\");\n            return;\n        }\n\n        Node temp = tail;\n\n        while (temp != null) {\n            System.out.print(temp.data + \" -> \");\n            temp = temp.prev;\n        }\n\n        System.out.println(\"null\");\n    }\n}\n\npublic class Main {\n\n    public static void main(String[] args) {\n\n        DoublyLinkedList d = new DoublyLinkedList();\n\n        d.addFirst(100);\n        d.addFirst(10);\n        d.addFirst(1);\n\n        d.addLast(1000);\n        d.addLast(2000);\n\n        System.out.println(\"Forward:\");\n        d.display();\n\n        System.out.println(\"Reverse:\");\n        d.displayReverse();\n\n        System.out.println(\"\\nAfter deleteFirst():\");\n        d.deleteFirst();\n        d.display();\n\n        System.out.println(\"\\nAfter deleteLast():\");\n        d.deleteLast();\n        d.display();\n\n        System.out.println(\"\\nReverse Again:\");\n        d.displayReverse();\n    }\n}",
+    "code": "class Node {\n    int data;\n    Node next;\n    Node prev;\n\n    Node(int data) {\n        this.data = data;\n        this.next = null;\n        this.prev = null;\n    }\n}\n\nclass DoublyLinkedList {\n\n    Node head;\n    Node tail;\n\n    // Insert at beginning\n    void addFirst(int data) {\n\n        Node newNode = new Node(data);\n\n        if (head == null) {\n            head = tail = newNode;\n            return;\n        }\n\n        newNode.next = head;\n        head.prev = newNode;\n        head = newNode;\n    }\n\n    // Insert at end\n    void addLast(int data) {\n\n        Node newNode = new Node(data);\n\n        if (head == null) {\n            head = tail = newNode;\n            return;\n        }\n\n        tail.next = newNode;\n        newNode.prev = tail;\n        tail = newNode;\n    }\n\n    // Delete first node\n    void deleteFirst() {\n\n        if (head == null) {\n            System.out.println(\"List is empty\");\n            return;\n        }\n\n        // Only one node\n        if (head == tail) {\n            head = tail = null;\n            return;\n        }\n\n        head = head.next;\n        head.prev = null;\n    }\n\n    // Delete last node\n    void deleteLast() {\n\n        if (head == null) {\n            System.out.println(\"List is empty\");\n            return;\n        }\n\n        // Only one node\n        if (head == tail) {\n            head = tail = null;\n            return;\n        }\n\n        tail = tail.prev;\n        tail.next = null;\n    }\n\n    // Display from head to tail\n    void display() {\n\n        if (head == null) {\n            System.out.println(\"List is empty\");\n            return;\n        }\n\n        Node temp = head;\n\n        while (temp != null) {\n            System.out.print(temp.data + \" -> \");\n            temp = temp.next;\n        }\n\n        System.out.println(\"null\");\n    }\n\n    // Display from tail to head\n    void displayReverse() {\n\n        if (tail == null) {\n            System.out.println(\"List is empty\");\n            return;\n        }\n\n        Node temp = tail;\n\n        while (temp != null) {\n            System.out.print(temp.data + \" -> \");\n            temp = temp.prev;\n        }\n\n        System.out.println(\"null\");\n    }\n}\n\nclass Main {\n\n    public static void main(String[] args) {\n\n        DoublyLinkedList d = new DoublyLinkedList();\n\n        d.addFirst(100);\n        d.addFirst(10);\n        d.addFirst(1);\n\n        d.addLast(1000);\n        d.addLast(2000);\n\n        System.out.println(\"Forward:\");\n        d.display();\n\n        System.out.println(\"Reverse:\");\n        d.displayReverse();\n\n        System.out.println(\"\\nAfter deleteFirst():\");\n        d.deleteFirst();\n        d.display();\n\n        System.out.println(\"\\nAfter deleteLast():\");\n        d.deleteLast();\n        d.display();\n\n        System.out.println(\"\\nReverse Again:\");\n        d.displayReverse();\n    }\n}",
     "createdAt": "2026-07-07T06:35:51.545Z",
-    "category": "linkedList"
+    "category": "linkedList",
+    "output": "Forward:\n1 -> 10 -> 100 -> 1000 -> 2000 -> null\nReverse:\n2000 -> 1000 -> 100 -> 10 -> 1 -> null\n\nAfter deleteFirst():\n10 -> 100 -> 1000 -> 2000 -> null\n\nAfter deleteLast():\n10 -> 100 -> 1000 -> null\n\nReverse Again:\n1000 -> 100 -> 10 -> null\n"
   },
   {
     "id": "1ne2skf",
@@ -174,9 +305,10 @@
     "name": "achiveByFlow.java",
     "description": "Flow",
     "level": "Easy",
-    "code": "Interview tip\n\nYour approach is exactly what interviewers usually expect:\n\nBinary ↔ Decimal\nOctal ↔ Decimal\nHexadecimal ↔ Decimal\n\nFor conversions between two non-decimal bases, it's often easiest to go through decimal:\n\nOctal → Decimal → Binary\nBinary → Decimal → Octal\nHex → Decimal → Binary",
+    "code": "// Binary\ndecimal += digit * Math.pow(2, power);\n\n// Octal\ndecimal += digit * Math.pow(8, power);\n\n// Hexadecimal\ndecimal += value * Math.pow(16, power);\n\n\n\n\nInterview tip\n\nYour approach is exactly what interviewers usually expect:\n\nBinary ↔ Decimal\nOctal ↔ Decimal\nHexadecimal ↔ Decimal\n\nFor conversions between two non-decimal bases, it's often easiest to go through decimal:\n\nOctal → Decimal → Binary\nBinary → Decimal → Octal\nHex → Decimal → Binary",
     "createdAt": "2026-06-26T10:59:20.052Z",
-    "category": "Conversion"
+    "category": "Conversion",
+    "output": ""
   },
   {
     "id": "myck6gr",
@@ -190,20 +322,22 @@
   {
     "id": "mp7fxsn",
     "name": "OctalToDecimal .java",
-    "description": "OctalToDecimal ",
+    "description": "https://claude.ai/chat/9a08502d-a74d-4211-9418-f3e2b34049c4",
     "level": "Medium",
     "code": "import java.util.Scanner;\n\npublic class OctalToDecimal {\n\n    static void convertToDecimal(int num) {\n\n        int decimal = 0;\n        int power = 1;\n\n        while (num > 0) {\n\n            int digit = num % 10;\n            decimal += digit * power;\n\n            power *= 8;\n            num /= 10;\n        }\n\n        System.out.println(decimal);\n    }\n\n    public static void main(String[] args) {\n\n        Scanner sc = new Scanner(System.in);\n\n        int n = sc.nextInt();\n\n        convertToDecimal(n);\n\n        sc.close();\n    }\n}",
     "createdAt": "2026-06-26T10:55:53.717Z",
-    "category": "Conversion"
+    "category": "Conversion",
+    "output": "1) 725₈ = 469₁₀  \n\n         8⁰ = 1\n         8¹ = 8\n         8² = 64\n         8³ = 512\n         8⁴ = 4096\n\n2) 157₈ = 111₁₀"
   },
   {
     "id": "3qjdn5r",
     "name": "Decimal to Octal.java",
-    "description": "https://claude.ai/chat/f779a9fe-eb76-42f8-bc9e-0e9bc7a0bcea",
+    "description": "https://claude.ai/chat/9b0379b1-272e-4f81-983c-c472833f3b13",
     "level": "Medium",
-    "code": "import java.util.Scanner;\n\npublic class DecimalToOctal {\n\n    static void convertToOctal(int num) {\n\n        if (num == 0) {\n            System.out.println(0);\n            return;\n        }\n\n        StringBuilder ans = new StringBuilder();\n\n        while (num > 0) {\n            ans.append(num % 8);\n            num /= 8;\n        }\n\n        System.out.println(ans.reverse());\n    }\n\n    public static void main(String[] args) {\n\n        Scanner sc = new Scanner(System.in);\n\n        int n = sc.nextInt();\n\n        convertToOctal(n);\n\n        sc.close();\n    }\n}",
+    "code": "import java.util.Scanner;\n\npublic class DecimalToOctal {\n\n    static void convertToOctal(int num) {\n\n        if (num == 0) {\n            System.out.println(0);\n            return;\n        }\n\n        StringBuilder ans = new StringBuilder();\n\n        while (num > 0) {\n            ans.append(num % 8);\n            num /= 8;\n        }\n\n        System.out.println(ans.reverse());\n    }\n\n    public static void main(String[] args) {\n\n        Scanner sc = new Scanner(System.in);\n\n        int n = sc.nextInt();\n\n        convertToOctal(n);\n\n        sc.close();\n    }\n}\n\n\n// OOOOOOOOOOOORRRRRRRRRRRR\n\npublic class Main {\n    public static void main(String[] args) {\n\n        int decimal = 83;\n        String octal = \"\";\n\n        while (decimal > 0) {\n            int remainder = decimal % 8;\n            octal = remainder + octal;\n            decimal = decimal / 8;\n        }\n\n        System.out.println(octal);\n    }\n}\n\n// OOOOORRRRRRRRR\n\npublic class Main {\n    public static void main(String[] args) {\n\n        int decimal = 83;\n        StringBuilder octal = new StringBuilder();\n\n        while (decimal > 0) {\n            int remainder = decimal % 8;\n           octal.append(remainder);\n            decimal = decimal / 8;\n        }\n         octal.reverse();\n        System.out.println(octal);\n    }\n}",
     "createdAt": "2026-06-26T10:50:55.870Z",
-    "category": "Conversion"
+    "category": "Conversion",
+    "output": ""
   },
   {
     "id": "6w2f4yr",
@@ -319,7 +453,8 @@
     "level": "Easy",
     "code": "class Main {\n        static int countZeros(int n) {\n                if(n == 0) {\n                        return 0;\n                }\n                if((n % 10) == 0) {\n                        return 1 + countZeros(n/10);\n                }\n                return countZeros(n/10);        \n        }\n        \n        public static void main(String[] args) {\n             System.out.println(countZeros(100030400));;\n        }\n}",
     "createdAt": "2026-06-26T06:49:55.434Z",
-    "category": "recursion"
+    "category": "recursion",
+    "output": "6"
   },
   {
     "id": "y0f0epu",
@@ -337,7 +472,8 @@
     "level": "Easy",
     "code": "class MyClass {\n        static int Sum(int arr[], int idx ) {\n                if(idx == arr.length ) {\n                        return 0;\n                }\n        return arr[idx] + Sum(arr , idx+1);\n                \n        }\n        public static void main(String[] args) {\n                int arr[] = {12,12,6,5};\n                int idx = 0;\n                System.out.println(Sum(arr , idx ));\n        }\n}",
     "createdAt": "2026-06-26T06:49:15.178Z",
-    "category": "recursion"
+    "category": "recursion",
+    "output": "35"
   },
   {
     "id": "4ry0g8f",
@@ -346,7 +482,8 @@
     "level": "Easy",
     "code": "public class MyClass {\n        static int sum(int n , int r) {\n                if(n == 0) {\n                        return r;\n                }\n                 r =r * 10 + (n % 10);\n                return   sum(n / 10,r);\n        }\n    public static void main(String[] args) {\n            System.out.println(sum(1234, 0));\n    }\n}",
     "createdAt": "2026-06-26T06:48:49.481Z",
-    "category": "recursion"
+    "category": "recursion",
+    "output": "4321"
   },
   {
     "id": "vs8at0c",
@@ -355,7 +492,8 @@
     "level": "Easy",
     "code": "public class MyClass {\n        static int sum(int n , int p) {\n                if(n == 0) {\n                        return p;\n                }\n                 p =p * (n % 10);\n                return   sum(n / 10, p);\n        }\n    public static void main(String[] args) {\n            System.out.println(sum(1242, 1));\n    }\n}",
     "createdAt": "2026-06-26T06:48:25.617Z",
-    "category": "recursion"
+    "category": "recursion",
+    "output": "16"
   },
   {
     "id": "pcuee95",
@@ -364,7 +502,8 @@
     "level": "Easy",
     "code": "public class MyClass {\n        static int fact(int n) {\n                if(n == 0) {\n                        return 0;\n                }\n                \n                return 1 + fact( n / 10);\n        }\n\n    public static void main(String[] args) {\n            System.out.println(fact(1234567));\n    }\n}",
     "createdAt": "2026-06-26T06:47:58.213Z",
-    "category": "recursion"
+    "category": "recursion",
+    "output": "7"
   },
   {
     "id": "uf4actw",
@@ -373,7 +512,8 @@
     "level": "Easy",
     "code": "public class MyClass {\n        static int fact(int n) {\n                if(n == 1) {\n                        return 1;\n                }\n                \n                return n * fact(n-1);\n        }\n\n    public static void main(String[] args) {\n            System.out.println(fact(5));\n    }\n}",
     "createdAt": "2026-06-26T06:47:40.275Z",
-    "category": "recursion"
+    "category": "recursion",
+    "output": "120"
   },
   {
     "id": "uzhxtl6",
@@ -382,7 +522,8 @@
     "level": "Easy",
     "code": "public class MyClass {\n        static int num(int n) {\n                if(n == 0) {\n                        return 0;\n                }\n                return n + num(n-1);\n        }\npublic static void main(String[] args) {\n        System.out.println(num(5));\n        }\n}\n",
     "createdAt": "2026-06-26T06:47:19.308Z",
-    "category": "recursion"
+    "category": "recursion",
+    "output": "15"
   },
   {
     "id": "uy6393o",
@@ -445,7 +586,8 @@
     "level": "Medium",
     "code": "class Main {\n\n    static int maxArea(int[] height) {\n\n        int left = 0;\n        int right = height.length - 1;\n\n        int maxWater = 0;\n\n        while (left < right) {\n\n            int width = right - left;\n\n            int ht = Math.min(height[left], height[right]);\n\n            int currWater = width * ht;\n\n            maxWater = Math.max(maxWater, currWater);\n\n            if (height[left] < height[right]) {\n                left++;\n            } else {\n                right--;\n            }\n        }\n\n        return maxWater;\n    }\n\n    public static void main(String[] args) {\n\n        int[] height = {1, 8, 6, 2, 5, 4, 8, 3, 7};\n\n        System.out.println(maxArea(height));\n    }\n}",
     "createdAt": "2026-06-25T13:50:42.248Z",
-    "category": "two pointer"
+    "category": "two pointer",
+    "output": "49\r\n"
   },
   {
     "id": "9onlgov",
@@ -616,7 +758,8 @@
     "level": "Hard",
     "code": "import java.util.ArrayList;\npublic class MyClass {\n    static void subsets(int[] arr, int idx, ArrayList<Integer> temp) {\n        // Base Case\n        if (idx == arr.length) {\n            System.out.println(temp);\n            return;\n        }\n        // Not Take\n        subsets(arr, idx + 1, temp);\n\n        // Take\n        temp.add(arr[idx]); // adding \n        subsets(arr, idx + 1, temp); // after adding exploring next\n\n        // Backtrack\n        temp.remove(temp.size() - 1); // after explore Backtrack\n    }\n\n    public static void main(String[] args) {\n        int[] arr = {1, 2, 3};\n        subsets(arr, 0, new ArrayList<>());\n    }\n}",
     "createdAt": "2026-06-15T12:06:56.738Z",
-    "category": "Backtracking"
+    "category": "Backtracking",
+    "output": "[]\n[1]\n[2]\n[3]\n[1, 2]\n[1, 3]\n[2, 3]\n[1, 2, 3]"
   },
   {
     "id": "ddjpf96",
@@ -625,7 +768,8 @@
     "level": "Hard",
     "code": "class MyClass {\n\n    static void subsequence(String str, int idx, String ans) {\n        if (idx == str.length()) {\n            System.out.println(ans);\n            return;\n        }\n        // Take current character // subsequence we first take and also pass the ans as parameter\n        subsequence(str, idx + 1, ans + str.charAt(idx));\n\n        // Don't take current character\n        subsequence(str, idx + 1, ans);\n    }\n\n    public static void main(String[] args) {\n        String str = \"abc\";\n        subsequence(str, 0, \"\");\n    }\n}",
     "createdAt": "2026-06-15T12:05:28.346Z",
-    "category": "Backtracking"
+    "category": "Backtracking",
+    "output": "ABC\nAB\nAC\nA\nBC\nB\nC\n\"\""
   },
   {
     "id": "6bgwd8e",
@@ -634,7 +778,8 @@
     "level": "Hard",
     "code": "class MyClass {\n    static void permutation(String str,  String perm) {\n    \t\tif(str.length() == 0) { // we updating the str  ( newStr ?) // reduceses the size\n    \t\t\tSystem.out.println(perm);\n    \t\t\treturn;\n    \t\t}\n    \t\tfor (int i = 0; i < str.length(); i++) { // loops runs < str.length()\n    \t\t\tchar currentChar = str.charAt(i);\n    \t\t\tString newStr = str.substring(0,i) + str.substring(i+1); // extracting the remaining string to pass next time\n    \t\t\tpermutation(newStr , perm+currentChar); \n\t\t\t\t\n             }\t\n       }\n    public static void main(String[] args) {\n        String str = \"abc\";\n        permutation(str, \"\");\n    }\n}",
     "createdAt": "2026-06-15T12:01:35.771Z",
-    "category": "Backtracking"
+    "category": "Backtracking",
+    "output": "ABC\nACB\nBAC\nBCA\nCAB\nCBA"
   },
   {
     "id": "1sxj7t9",
